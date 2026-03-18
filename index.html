@@ -32,7 +32,7 @@
                 <img src="logo1.png" class="w-12 h-12 object-contain">
                 <h1 class="font-display text-2xl font-black text-pizza-dark">SANTY'S</h1>
             </div>
-            <button onclick="toggleCart()" class="relative bg-pizza-red text-white px-5 py-2 rounded-full font-bold">
+            <button onclick="toggleCart()" class="relative bg-pizza-red text-white px-5 py-2 rounded-full font-bold shadow-lg">
                 🛒 Mi Pedido <span id="cart-badge" class="ml-1 bg-pizza-gold text-pizza-dark px-2 rounded-full text-xs">0</span>
             </button>
         </div>
@@ -47,9 +47,9 @@
     <main class="pt-40 pb-24 max-w-6xl mx-auto px-4">
         
         <div id="sec-promos" class="menu-section">
-            <h2 class="text-2xl font-black mb-6 uppercase">Dúos 35cm (Estándar)</h2>
+            <h2 class="text-2xl font-black mb-6 uppercase text-pizza-red border-b-2 border-pizza-gold inline-block">Dúos 35cm</h2>
             <div id="grid-35" class="grid md:grid-cols-3 gap-6 mb-12"></div>
-            <h2 class="text-2xl font-black mb-6 uppercase">Dúos 40cm (Hambre Feroz)</h2>
+            <h2 class="text-2xl font-black mb-6 uppercase text-pizza-dark border-b-2 border-pizza-red inline-block">Dúos 40cm</h2>
             <div id="grid-40" class="grid md:grid-cols-3 gap-6"></div>
         </div>
 
@@ -59,15 +59,14 @@
         </div>
 
         <div id="sec-snacks" class="menu-section hidden">
-            <h2 class="text-2xl font-black mb-6 uppercase">Complementos</h2>
+            <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter">Complementos</h2>
             <div id="grid-snacks" class="grid md:grid-cols-2 gap-4"></div>
         </div>
 
         <div id="sec-bebidas" class="menu-section hidden">
-            <h2 class="text-2xl font-black mb-6 uppercase">Para la Sed</h2>
+            <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter">Bebidas</h2>
             <div id="grid-bebidas" class="grid md:grid-cols-2 gap-4"></div>
         </div>
-
     </main>
 
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/60 z-50 hidden"></div>
@@ -79,7 +78,7 @@
         <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
         <div class="p-6 bg-gray-50 border-t space-y-4">
             <div class="flex justify-between text-xl font-bold"><span>Total:</span><span id="cart-total">$0.00</span></div>
-            <button onclick="openCheckout()" class="w-full bg-pizza-red text-white py-4 rounded-xl font-bold shadow-xl">Finalizar Compra</button>
+            <button onclick="openCheckout()" class="w-full bg-pizza-red text-white py-4 rounded-xl font-bold">Confirmar Pedido</button>
         </div>
     </div>
 
@@ -94,81 +93,93 @@
                     <option value="delivery">🛵 Envío a Domicilio</option>
                 </select>
                 <input id="c-dir" type="text" placeholder="Calle, número y colonia" class="w-full border p-3 rounded-xl hidden">
-                <button onclick="sendWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold">Confirmar Pedido ✅</button>
-                <button onclick="closeCheckout()" class="w-full text-gray-400 font-bold mt-2">Regresar</button>
+                <button onclick="sendWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold uppercase tracking-widest">Enviar Pedido 🚀</button>
+                <button onclick="closeCheckout()" class="w-full text-gray-400 font-bold mt-2">Cerrar</button>
             </div>
         </div>
     </div>
 
     <script>
-        const pizzasBasicas = ["Pepperoni", "Jamón", "Chorizo", "3 Quesos"];
-        const pizzasEspeciales = ["Hawaiana", "Mexicana", "Santy's Special", "Vegetariana"];
-        const saboresRefresco = ["Pepsi", "Mirinda", "7up", "Manzanita", "Agua"];
+        const pBasicas = ["Pepperoni", "Jamón", "Chorizo", "3 Quesos"];
+        const pEspeciales = ["Hawaiana", "Mexicana", "3 Carnes", "Santy's Special", "Vegetariana"];
+        const sRefresco = ["Pepsi", "Mirinda", "7up", "Manzanita", "Agua"];
 
         const combos = [
-            { id: 101, group: 35, name: "Dúo 35 Básica", price: 199, desc: "Pizza 35cm + Papas Gajo", hasUpgrade: true, selects: [{l:"Pizza", opts: pizzasBasicas}] },
-            { id: 102, group: 35, name: "Dúo 35 Doble", price: 289, desc: "2 Pizzas 35cm Básicas", selects: [{l:"Pizza 1", opts: pizzasBasicas}, {l:"Pizza 2", opts: pizzasBasicas}] },
-            { id: 103, group: 35, name: "Dúo 35 Especial", price: 339, desc: "2 Pizzas 35cm Especiales", selects: [{l:"Pizza 1", opts: pizzasEspeciales}, {l:"Pizza 2", opts: pizzasEspeciales}] },
-            { id: 104, group: 40, name: "Dúo 40 Básica", price: 239, desc: "Pizza 40cm + Papas Gajo", hasUpgrade: true, selects: [{l:"Pizza", opts: pizzasBasicas}] },
-            { id: 105, group: 40, name: "Dúo 40 Doble", price: 369, desc: "2 Pizzas 40cm Básicas", selects: [{l:"Pizza 1", opts: pizzasBasicas}, {l:"Pizza 2", opts: pizzasBasicas}] },
-            { id: 106, group: 40, name: "Dúo 40 Especial", price: 399, desc: "2 Pizzas 40cm Especiales", selects: [{l:"Pizza 1", opts: pizzasEspeciales}, {l:"Pizza 2", opts: pizzasEspeciales}] }
+            { id: 101, group: 35, name: "Dúo 35 Básica", price: 199, desc: "1 Pizza 35cm (Básica) + Papas Gajo 220g", hasUpgrade: true, selects: [{l:"Elige Pizza", opts: pBasicas}] },
+            { id: 102, group: 35, name: "Dúo 35 Doble", price: 289, desc: "2 Pizzas 35cm Básicas", selects: [{l:"Pizza 1", opts: pBasicas}, {l:"Pizza 2", opts: pBasicas}] },
+            { id: 103, group: 35, name: "Dúo 35 Especial", price: 339, desc: "2 Pizzas 35cm Especialidades", selects: [{l:"Pizza 1", opts: pEspeciales}, {l:"Pizza 2", opts: pEspeciales}] },
+            { id: 104, group: 40, name: "Dúo 40 Básica", price: 239, desc: "1 Pizza 40cm (Básica) + Papas Gajo 220g", hasUpgrade: true, selects: [{l:"Elige Pizza", opts: pBasicas}] },
+            { id: 105, group: 40, name: "Dúo 40 Doble", price: 369, desc: "2 Pizzas 40cm Básicas", selects: [{l:"Pizza 1", opts: pBasicas}, {l:"Pizza 2", opts: pBasicas}] },
+            { id: 106, group: 40, name: "Dúo 40 Especial", price: 399, desc: "2 Pizzas 40cm Especialidades", selects: [{l:"Pizza 1", opts: pEspeciales}, {l:"Pizza 2", opts: pEspeciales}] }
         ];
 
         const individuales = [
             { id: 1, name: "Pepperoni", cat: "pizzas", price: {s:169, m:199, l:219}, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
-            { id: 2, name: "Hawaiana", cat: "pizzas", price: {s:189, m:209, l:249}, img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
-            { id: 3, name: "Mexicana", cat: "pizzas", price: {s:189, m:209, l:249}, img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
-            { id: 50, name: "Papas Gajo 220g", cat: "snacks", price: 79 },
-            { id: 51, name: "Alitas 250g", cat: "snacks", price: 99, opts: ["BBQ", "Búfalo", "Mango Habanero"] },
-            { id: 60, name: "Refresco 600ml", cat: "bebidas", price: 25, opts: saboresRefresco },
-            { id: 61, name: "Refresco 2L", cat: "bebidas", price: 45, opts: saboresRefresco }
+            { id: 2, name: "Jamón", cat: "pizzas", price: {s:169, m:199, l:219}, img: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
+            { id: 3, name: "Chorizo", cat: "pizzas", price: {s:169, m:199, l:219}, img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
+            { id: 4, name: "3 Quesos", cat: "pizzas", price: {s:169, m:199, l:219}, img: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
+            { id: 5, name: "3 Carnes", cat: "pizzas", price: {s:189, m:209, l:249}, img: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c" },
+            { id: 6, name: "Hawaiana", cat: "pizzas", price: {s:189, m:209, l:249}, img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
+            { id: 7, name: "Mexicana", cat: "pizzas", price: {s:189, m:209, l:249}, img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
+            
+            { id: 50, name: "Papas Gajo", cat: "snacks", price: {s:79, m:99}, labels: {s:"220g", m:"350g"} },
+            { id: 51, name: "Alitas", cat: "snacks", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, opts: ["BBQ", "Búfalo", "Mango Habanero"] },
+            
+            { id: 60, name: "Refresco 600ml", cat: "bebidas", price: 25, opts: sRefresco },
+            { id: 61, name: "Refresco 2L", cat: "bebidas", price: 45, opts: sRefresco }
         ];
 
         let cart = [];
 
         function renderAll() {
-            // Render Promos
             combos.forEach(c => {
                 const html = `
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-                        <h3 class="font-extrabold text-pizza-dark">${c.name}</h3>
-                        <p class="text-pizza-red font-black text-2xl">$${c.price}</p>
-                        <div class="space-y-2 mt-4">
-                            ${c.selects.map((s, i) => `<select id="c-sel-${c.id}-${i}" class="w-full border p-2 rounded-xl text-xs font-bold">${s.opts.map(o => `<option>${o}</option>`).join('')}</select>`).join('')}
-                            ${c.hasUpgrade ? `<label class="flex items-center gap-2 bg-yellow-50 p-2 rounded-xl border border-yellow-100 cursor-pointer"><input type="checkbox" id="upg-${c.id}" class="accent-pizza-red"><span class="text-[10px] font-bold">Cambiar papas por Alitas (+$36)</span></label>` : ''}
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full">
+                        <h3 class="font-extrabold text-pizza-dark leading-tight mb-1">${c.name}</h3>
+                        <p class="text-gray-400 text-[10px] mb-3 uppercase font-bold tracking-wider">${c.desc}</p>
+                        <p class="text-pizza-red font-black text-2xl mb-4">$${c.price}</p>
+                        <div class="space-y-2 mb-4 mt-auto">
+                            ${c.selects.map((s, i) => `<select id="c-sel-${c.id}-${i}" class="w-full border-2 border-gray-50 p-2 rounded-xl text-xs font-bold">${s.opts.map(o => `<option>${o}</option>`).join('')}</select>`).join('')}
+                            ${c.hasUpgrade ? `<label class="flex items-center gap-2 bg-yellow-50 p-3 rounded-xl border border-yellow-200 cursor-pointer"><input type="checkbox" id="upg-${c.id}" class="accent-pizza-red"><span class="text-[10px] font-black text-pizza-dark uppercase">Cambiar papas por Alitas 250g (+$36)</span></label>` : ''}
                         </div>
-                        <button onclick="addCombo(${c.id})" class="w-full mt-4 bg-pizza-dark text-white py-3 rounded-xl font-bold">Añadir Dúo</button>
+                        <button onclick="addCombo(${c.id})" class="w-full bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir Dúo</button>
                     </div>`;
                 c.group === 35 ? document.getElementById('grid-35').innerHTML += html : document.getElementById('grid-40').innerHTML += html;
             });
 
-            // Render Pizzas Individuales
             individuales.filter(x => x.cat === "pizzas").forEach(p => {
                 document.getElementById('grid-pizzas').innerHTML += `
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm border">
                         <img src="${p.img}" class="h-40 w-full object-cover">
                         <div class="p-5">
-                            <h3 class="font-bold">${p.name}</h3>
-                            <select id="psize-${p.id}" class="w-full border p-2 rounded-xl my-3 text-sm font-bold bg-gray-50">
+                            <h3 class="font-bold text-pizza-dark uppercase text-sm mb-3">${p.name}</h3>
+                            <select id="psize-${p.id}" class="w-full border-2 border-gray-50 p-2 rounded-xl mb-4 text-xs font-bold">
                                 <option value="s">35cm - $${p.price.s}</option>
                                 <option value="m">40cm - $${p.price.m}</option>
                                 <option value="l">45cm - $${p.price.l}</option>
                             </select>
-                            <button onclick="addPizzaInd(${p.id})" class="w-full bg-pizza-dark text-white py-2 rounded-xl font-bold">Añadir</button>
+                            <button onclick="addPizzaInd(${p.id})" class="w-full bg-pizza-dark text-white py-2 rounded-xl font-bold text-xs uppercase">Añadir</button>
                         </div>
                     </div>`;
             });
 
-            // Snacks y Bebidas
             individuales.filter(x => x.cat !== "pizzas").forEach(item => {
                 const target = item.cat === "snacks" ? "grid-snacks" : "grid-bebidas";
+                let inputs = "";
+                if(item.price.s) {
+                    inputs = `<select id="size-${item.id}" class="text-[10px] border p-1 rounded-md font-bold">
+                        <option value="s">${item.labels.s} - $${item.price.s}</option>
+                        <option value="m">${item.labels.m} - $${item.price.m}</option>
+                    </select>`;
+                }
                 document.getElementById(target).innerHTML += `
-                    <div class="bg-white p-4 rounded-2xl flex justify-between items-center border">
-                        <div>
-                            <p class="font-bold text-sm">${item.name}</p>
-                            ${item.opts ? `<select id="opt-${item.id}" class="text-[10px] border p-1 rounded-md mt-1">${item.opts.map(o => `<option>${o}</option>`).join('')}</select>` : ''}
+                    <div class="bg-white p-4 rounded-2xl flex justify-between items-center border shadow-sm">
+                        <div class="flex flex-col gap-1">
+                            <p class="font-bold text-sm text-pizza-dark uppercase">${item.name}</p>
+                            ${item.opts ? `<select id="opt-${item.id}" class="text-[10px] border p-1 rounded-md">${item.opts.map(o => `<option>${o}</option>`).join('')}</select>` : ''}
+                            ${inputs}
                         </div>
-                        <button onclick="addSimpleItem(${item.id})" class="bg-pizza-gold text-pizza-dark px-4 py-1 rounded-full font-bold text-xs">$${item.price} +</button>
+                        <button onclick="addAdvancedItem(${item.id})" class="bg-pizza-gold text-pizza-dark px-4 py-2 rounded-full font-bold text-xs">$+ Añadir</button>
                     </div>`;
             });
         }
@@ -176,38 +187,40 @@
         function filterCategory(cat) {
             document.querySelectorAll('.menu-section').forEach(s => s.classList.add('hidden'));
             document.getElementById('sec-' + cat).classList.remove('hidden');
-            document.querySelectorAll('nav button[id^="tab-"]').forEach(b => {
-                b.classList.remove('active-tab', 'text-pizza-red');
-                b.classList.add('text-gray-400');
-            });
-            const active = document.getElementById('tab-' + cat);
-            active.classList.add('active-tab', 'text-pizza-red');
-            active.classList.remove('text-gray-400');
+            document.querySelectorAll('nav button[id^="tab-"]').forEach(b => b.classList.remove('active-tab', 'text-pizza-red'));
+            document.getElementById('tab-' + cat).classList.add('active-tab', 'text-pizza-red');
         }
 
         function addCombo(id) {
             const c = combos.find(x => x.id === id);
-            let price = c.price;
+            let p = c.price;
             let sel = [];
             c.selects.forEach((_, i) => sel.push(document.getElementById(`c-sel-${id}-${i}`).value));
             const up = document.getElementById(`upg-${id}`);
-            if(up && up.checked) { price += 36; sel.push("Upgrade Alitas"); }
-            cart.push({ name: c.name, price: price, details: sel.join(' / ') });
+            if(up && up.checked) { p += 36; sel.push("Upgrade Alitas 250g"); }
+            cart.push({ name: c.name, price: p, details: sel.join(' / ') });
             updateUI();
         }
 
         function addPizzaInd(id) {
             const p = individuales.find(x => x.id === id);
-            const size = document.getElementById(`psize-${id}`).value;
-            const sizeName = size==='s'?'35cm':size==='m'?'40cm':'45cm';
-            cart.push({ name: `Pizza ${p.name}`, price: p.price[size], details: sizeName });
+            const s = document.getElementById(`psize-${id}`).value;
+            const sizeLabel = s==='s'?'35cm':s==='m'?'40cm':'45cm';
+            cart.push({ name: `Pizza ${p.name}`, price: p.price[s], details: sizeLabel });
             updateUI();
         }
 
-        function addSimpleItem(id) {
+        function addAdvancedItem(id) {
             const item = individuales.find(x => x.id === id);
-            const opt = document.getElementById(`opt-${id}`) ? `(${document.getElementById(`opt-${id}`).value})` : "";
-            cart.push({ name: item.name, price: item.price, details: opt || "Unidad" });
+            let p = item.price;
+            let det = "";
+            if(item.price.s) {
+                const s = document.getElementById(`size-${id}`).value;
+                p = item.price[s];
+                det = item.labels[s];
+            }
+            if(item.opts) det += (det ? " / " : "") + document.getElementById(`opt-${id}`).value;
+            cart.push({ name: item.name, price: p, details: det || "Unidad" });
             updateUI();
         }
 
@@ -217,8 +230,8 @@
             container.innerHTML = cart.map((item, idx) => {
                 total += item.price;
                 return `<div class="bg-gray-50 p-3 rounded-xl flex justify-between items-center text-xs border">
-                    <div><p class="font-bold">${item.name}</p><p class="text-pizza-red text-[10px]">${item.details}</p></div>
-                    <div class="text-right"><p class="font-bold">$${item.price}</p><button onclick="cart.splice(${idx},1);updateUI()" class="text-gray-400 text-[9px] underline uppercase">Eliminar</button></div>
+                    <div><p class="font-black text-pizza-dark uppercase">${item.name}</p><p class="text-pizza-red font-bold text-[9px]">${item.details}</p></div>
+                    <div class="text-right"><p class="font-black">$${item.price}</p><button onclick="cart.splice(${idx},1);updateUI()" class="text-gray-400 text-[8px] underline uppercase">Eliminar</button></div>
                 </div>`;
             }).join('');
             document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
@@ -235,10 +248,10 @@
         function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
         function sendWhatsApp() {
-            const name = document.getElementById('c-name').value;
-            const phone = document.getElementById('c-phone').value;
-            if(name.length < 3 || phone.length !== 10) return alert("Revisa tu nombre y teléfono");
-            let msg = `🍕 *SANTY'S PIZZERÍA*\n👤 *Cliente:* ${name}\n📞 *Tel:* ${phone}\n📦 *Tipo:* ${document.getElementById('c-type').value}\n`;
+            const n = document.getElementById('c-name').value;
+            const p = document.getElementById('c-phone').value;
+            if(n.length < 3 || p.length !== 10) return alert("Revisa tu nombre y teléfono");
+            let msg = `🍕 *SANTY'S PIZZERÍA - NUEVO PEDIDO*\n👤 *Cliente:* ${n}\n📦 *Tipo:* ${document.getElementById('c-type').value}\n`;
             if(document.getElementById('c-type').value === 'delivery') msg += `📍 *Dir:* ${document.getElementById('c-dir').value}\n`;
             msg += `━━━━━━━━━━━━━━\n`;
             cart.forEach(i => msg += `• ${i.name} (${i.details}) - $${i.price}\n`);
