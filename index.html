@@ -30,6 +30,7 @@
         .cart-closed { transform: translateX(100%); }
         .pizza-card:hover img { transform: scale(1.05); }
         .wood-gradient { background: linear-gradient(135deg, #401A0B 0%, #733219 100%); }
+        .input-error { border: 2px solid #ef4444 !important; background-color: #fef2f2; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
@@ -251,36 +252,64 @@
         function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
         function sendWhatsApp() {
-            const name = document.getElementById('cust-name').value;
-            const phone = document.getElementById('cust-phone').value;
-            const type = document.getElementById('order-type').value;
-            const notes = document.getElementById('cust-notes').value;
+    // 1. Referencias a los elementos
+    const fields = {
+        name: document.getElementById('cust-name'),
+        phone: document.getElementById('cust-phone'),
+        address: document.getElementById('cust-address'),
+        cross: document.getElementById('cust-cross')
+    };
+    const type = document.getElementById('order-type').value;
+    const notes = document.getElementById('cust-notes').value.trim();
 
-            if(!name || !phone) { alert("Por favor dinos tu nombre y teléfono"); return; }
+    // 2. Limpiar errores previos
+    Object.values(fields).forEach(f => f.classList.remove('input-error'));
 
-            let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n`;
-            msg += `━━━━━━━━━━━━━━\n`;
-            msg += `👤 *Cliente:* ${name}\n`;
-            msg += `📞 *Tel:* ${phone}\n`;
-            msg += `📦 *Tipo:* ${type === 'delivery' ? '🛵 Entrega a domicilio' : '🏠 Recoge en local'}\n`;
-            
-            if(type === 'delivery') {
-                msg += `📍 *Dirección:* ${document.getElementById('cust-address').value}\n`;
-                msg += `🚩 *Ref:* ${document.getElementById('cust-cross').value}\n`;
-            }
-            if(notes) msg += `📝 *Nota:* ${notes}\n`;
-            
-            msg += `━━━━━━━━━━━━━━\n`;
-            msg += `*PRODUCTOS:*\n`;
-            cart.forEach(i => {
-                msg += `• ${i.quantity}x ${i.name} [${i.sizeLabel}] - $${i.currentPrice * i.quantity}\n`;
-            });
-            msg += `━━━━━━━━━━━━━━\n`;
-            const total = cart.reduce((s, i) => s + (i.currentPrice * i.quantity), 0);
-            msg += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*`;
+    let hasError = false;
 
-            window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+    // 3. Validar Nombre y Teléfono (Siempre obligatorios)
+    if (!fields.name.value.trim()) { fields.name.classList.add('input-error'); hasError = true; }
+    if (!fields.phone.value.trim()) { fields.phone.classList.add('input-error'); hasError = true; }
+
+    // 4. Validar Dirección y Referencias (Solo si es Delivery)
+    if (type === 'delivery') {
+        if (!fields.address.value.trim()) { fields.address.classList.add('input-error'); hasError = true; }
+        if (!fields.cross.value.trim()) { fields.cross.classList.add('input-error'); hasError = true; }
+    }
+
+    // 5. Si hay error, mostrar aviso y detener
+    if (hasError) {
+        showToast("⚠️ Por favor llena los campos marcados en rojo.");
+        return;
+    }
+
+    // 6. Construir el mensaje de ticket
+    let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n`;
+    msg += `━━━━━━━━━━━━━━\n`;
+    msg += `👤 *Cliente:* ${fields.name.value.trim()}\n`;
+    msg += `📞 *Tel:* ${fields.phone.value.trim()}\n`;
+    msg += `📦 *Tipo:* ${type === 'delivery' ? '🛵 Entrega a domicilio' : '🏠 Recoge en local'}\n`;
+    
+    if (type === 'delivery') {
+        msg += `📍 *Dirección:* ${fields.address.value.trim()}\n`;
+        msg += `🚩 *Ref:* ${fields.cross.value.trim()}\n`;
+    }
+    if (notes) msg += `📝 *Nota:* ${notes}\n`;
+    
+    msg += `━━━━━━━━━━━━━━\n`;
+    msg += `*PRODUCTOS:*\n`;
+    cart.forEach(i => {
+        msg += `• ${i.quantity}x ${i.name} [${i.sizeLabel}] - $${(i.currentPrice * i.quantity).toFixed(2)}\n`;
+    });
+    msg += `━━━━━━━━━━━━━━\n`;
+    
+    const total = cart.reduce((s, i) => s + (i.currentPrice * i.quantity), 0);
+    msg += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*`;
+
+    // 7. Abrir WhatsApp
+    window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
 
         function showToast(msg) {
             const t = document.getElementById('toast');
