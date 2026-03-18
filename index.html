@@ -31,6 +31,14 @@
         .pizza-card:hover img { transform: scale(1.05); }
         .wood-gradient { background: linear-gradient(135deg, #401A0B 0%, #733219 100%); }
         .input-error { border: 2px solid #ef4444 !important; background-color: #fef2f2; }
+        
+        /* Animación de Pulso */
+        @keyframes pulse-cart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .pulse-animation { animation: pulse-cart 0.4s ease-out; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans antialiased">
@@ -39,14 +47,14 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="logo1.png" alt="Santy's Logo" class="w-14 h-14 object-contain" onerror="this.src="logo1.png">
+                    <img src="logo2.png" alt="Santy's Logo" class="w-14 h-14 object-contain">
                     <div>
                         <h1 class="font-display text-2xl font-black text-pizza-dark tracking-tight leading-none">Santy's</h1>
                         <p class="text-[10px] text-pizza-red font-bold tracking-[0.2em] uppercase">Pizzería</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button onclick="toggleCart()" class="relative bg-pizza-red text-white px-5 py-2 rounded-full font-semibold hover:bg-pizza-dark transition shadow-lg flex items-center gap-2">
+                    <button id="main-cart-btn" onclick="toggleCart()" class="relative bg-pizza-red text-white px-5 py-2 rounded-full font-semibold hover:bg-pizza-dark transition shadow-lg flex items-center gap-2">
                         <span class="hidden sm:inline">Mi Pedido</span> 🛒
                         <span id="cart-badge" class="absolute -top-2 -right-2 bg-pizza-gold text-pizza-dark text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center opacity-0 transition-opacity border-2 border-white">0</span>
                     </button>
@@ -71,7 +79,7 @@
                 </div>
                 <div class="relative flex justify-center">
                     <div class="absolute inset-0 bg-pizza-gold/20 blur-3xl rounded-full"></div>
-                    <img src="https://i.ibb.co/L6vV9rN/santys-logo.png" alt="Santy's Pizzería Logo" class="relative z-10 w-full max-w-md drop-shadow-2xl">
+                    <img src="logo2.png" alt="Santy's Pizzería Logo" class="relative z-10 w-full max-w-md drop-shadow-2xl">
                 </div>
             </div>
         </div>
@@ -87,7 +95,7 @@
 
     <footer class="wood-gradient text-white py-12">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <img src="logo1.png" class="w-24 mx-auto mb-4 opacity-80">
+            <img src="logo2.png" class="w-24 mx-auto mb-4 opacity-80">
             <p class="font-display text-2xl font-bold mb-2">Santy's Pizzería</p>
             <p class="text-pizza-gold/80 mb-6 font-medium tracking-wide">Venustiano Carranza 241, Las Juntas, Pto Vallarta</p>
             <p class="text-white/40 text-sm italic">"Hecha a mano • Calidad superior"</p>
@@ -118,13 +126,7 @@
             <h2 class="text-2xl font-bold mb-6 text-pizza-dark">Confirmar Entrega</h2>
             <div class="space-y-4">
                 <input id="cust-name" type="text" placeholder="¿A nombre de quién?" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
-                <input id="cust-phone" 
-       type="tel" 
-       pattern="[0-9]*" 
-       inputmode="numeric" 
-       maxlength="10" 
-       placeholder="Teléfono (10 dígitos)" 
-       class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
+                <input id="cust-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="Teléfono (10 dígitos)" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
 
                 <select id="order-type" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold" onchange="toggleAddress(this.value)">
                     <option value="recoger">🏠 Recoger en sucursal (Las Juntas)</option>
@@ -191,13 +193,14 @@
             
             updateCartUI();
             showToast(`🔥 ${pizza.name} (${sizeLabel}) en el carrito`);
-            
         }
 
         function updateCartUI() {
             const container = document.getElementById('cart-items');
             const totalEl = document.getElementById('cart-total');
             const badge = document.getElementById('cart-badge');
+            const cartBtn = document.getElementById('main-cart-btn');
+
             let total = 0;
             let count = 0;
 
@@ -225,6 +228,13 @@
                         </div>
                     `;
                 }).join('');
+            }
+
+            // Efecto de pulso
+            if(count > 0) {
+                cartBtn.classList.remove('pulse-animation');
+                void cartBtn.offsetWidth; 
+                cartBtn.classList.add('pulse-animation');
             }
 
             totalEl.innerText = `$${total.toFixed(2)}`;
@@ -259,84 +269,65 @@
         function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
         function sendWhatsApp() {
-    // 1. Referencias a los elementos
-    const fields = {
-        name: document.getElementById('cust-name'),
-        phone: document.getElementById('cust-phone'),
-        address: document.getElementById('cust-address'),
-        cross: document.getElementById('cust-cross')
-        // ... dentro de sendWhatsApp() ...
+            const fields = {
+                name: document.getElementById('cust-name'),
+                phone: document.getElementById('cust-phone'),
+                address: document.getElementById('cust-address'),
+                cross: document.getElementById('cust-cross')
+            };
+            const type = document.getElementById('order-type').value;
+            const notes = document.getElementById('cust-notes').value.trim();
 
-let hasError = false;
+            Object.values(fields).forEach(f => f.classList.remove('input-error'));
+            let hasError = false;
 
-// Validar Nombre
-if (!fields.name.value.trim()) { 
-    fields.name.classList.add('input-error'); 
-    hasError = true; 
-}
+            // VALIDACIÓN NOMBRE
+            if (!fields.name.value.trim()) { fields.name.classList.add('input-error'); hasError = true; }
 
-// VALIDACIÓN DE TELÉFONO (10 DÍGITOS EXACTOS)
-const phoneValue = fields.phone.value.trim().replace(/\D/g, ''); // Elimina cualquier cosa que no sea número
-if (phoneValue.length !== 10) { 
-    fields.phone.classList.add('input-error'); 
-    showToast("⚠️ El teléfono debe tener 10 números exactos.");
-    hasError = true; 
-}
+            // VALIDACIÓN TELÉFONO (10 DÍGITOS EXACTOS)
+            const phoneValue = fields.phone.value.trim().replace(/\D/g, ''); 
+            if (phoneValue.length !== 10) { 
+                fields.phone.classList.add('input-error'); 
+                showToast("⚠️ El teléfono debe ser de 10 dígitos.");
+                hasError = true; 
+            }
 
-// ... continuar con la validación de dirección si es delivery ...
+            // VALIDACIÓN DELIVERY
+            if (type === 'delivery') {
+                if (!fields.address.value.trim()) { fields.address.classList.add('input-error'); hasError = true; }
+                if (!fields.cross.value.trim()) { fields.cross.classList.add('input-error'); hasError = true; }
+            }
 
-    };
-    const type = document.getElementById('order-type').value;
-    const notes = document.getElementById('cust-notes').value.trim();
+            if (hasError) {
+                showToast("⚠️ Llena los campos en rojo correctamente.");
+                return;
+            }
 
-    // 2. Limpiar errores previos
-    Object.values(fields).forEach(f => f.classList.remove('input-error'));
+            // Construir Ticket
+            let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n`;
+            msg += `━━━━━━━━━━━━━━\n`;
+            msg += `👤 *Cliente:* ${fields.name.value.trim()}\n`;
+            msg += `📞 *Tel:* ${phoneValue}\n`;
+            msg += `📦 *Tipo:* ${type === 'delivery' ? '🛵 Entrega a domicilio' : '🏠 Recoge en local'}\n`;
+            
+            if (type === 'delivery') {
+                msg += `📍 *Dirección:* ${fields.address.value.trim()}\n`;
+                msg += `🚩 *Ref:* ${fields.cross.value.trim()}\n`;
+            }
+            if (notes) msg += `📝 *Nota:* ${notes}\n`;
+            
+            msg += `━━━━━━━━━━━━━━\n`;
+            msg += `*PRODUCTOS:*\n`;
+            cart.forEach(i => {
+                msg += `• ${i.quantity}x ${i.name} [${i.sizeLabel}] - $${(i.currentPrice * i.quantity).toFixed(2)}\n`;
+            });
+            msg += `━━━━━━━━━━━━━━\n`;
+            
+            const total = cart.reduce((s, i) => s + (i.currentPrice * i.quantity), 0);
+            msg += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*`;
 
-    let hasError = false;
-
-    // 3. Validar Nombre y Teléfono (Siempre obligatorios)
-    if (!fields.name.value.trim()) { fields.name.classList.add('input-error'); hasError = true; }
-    if (!fields.phone.value.trim()) { fields.phone.classList.add('input-error'); hasError = true; }
-
-    // 4. Validar Dirección y Referencias (Solo si es Delivery)
-    if (type === 'delivery') {
-        if (!fields.address.value.trim()) { fields.address.classList.add('input-error'); hasError = true; }
-        if (!fields.cross.value.trim()) { fields.cross.classList.add('input-error'); hasError = true; }
-    }
-
-    // 5. Si hay error, mostrar aviso y detener
-    if (hasError) {
-        showToast("⚠️ Por favor llena los campos marcados en rojo.");
-        return;
-    }
-
-    // 6. Construir el mensaje de ticket
-    let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n`;
-    msg += `━━━━━━━━━━━━━━\n`;
-    msg += `👤 *Cliente:* ${fields.name.value.trim()}\n`;
-    msg += `📞 *Tel:* ${fields.phone.value.trim()}\n`;
-    msg += `📦 *Tipo:* ${type === 'delivery' ? '🛵 Entrega a domicilio' : '🏠 Recoge en local'}\n`;
-    
-    if (type === 'delivery') {
-        msg += `📍 *Dirección:* ${fields.address.value.trim()}\n`;
-        msg += `🚩 *Ref:* ${fields.cross.value.trim()}\n`;
-    }
-    if (notes) msg += `📝 *Nota:* ${notes}\n`;
-    
-    msg += `━━━━━━━━━━━━━━\n`;
-    msg += `*PRODUCTOS:*\n`;
-    cart.forEach(i => {
-        msg += `• ${i.quantity}x ${i.name} [${i.sizeLabel}] - $${(i.currentPrice * i.quantity).toFixed(2)}\n`;
-    });
-    msg += `━━━━━━━━━━━━━━\n`;
-    
-    const total = cart.reduce((s, i) => s + (i.currentPrice * i.quantity), 0);
-    msg += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*`;
-
-    // 7. Abrir WhatsApp
-    window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
+            window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
+        }
 
         function showToast(msg) {
             const t = document.getElementById('toast');
