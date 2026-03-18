@@ -1,309 +1,611 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Santy's Pizzeria</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-body{
-font-family: Inter, sans-serif;
-}
-
-.pizza-card:hover img{
-transform:scale(1.05);
-}
-
-img{
-transition:0.4s;
-}
-
-.cart-open{
-transform:translateX(0);
-}
-
-.cart-closed{
-transform:translateX(100%);
-}
-
-.cart-sidebar{
-transition:transform .3s ease;
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santy's Pizzeria - Delivery de Pizza Artesanal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'pizza-red': '#DC2626',
+                        'pizza-orange': '#F97316',
+                        'pizza-yellow': '#FBBF24',
+                        'pizza-cream': '#FEF3C7',
+                        'wood': '#92400E',
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .pizza-pattern {
+            background-image: radial-gradient(circle at 20% 50%, rgba(220, 38, 38, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .pizza-card:hover .pizza-img {
+            transform: scale(1.05) rotate(2deg);
+        }
+        .cart-sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .cart-open {
+            transform: translateX(0);
+        }
+        .cart-closed {
+            transform: translateX(100%);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #DC2626;
+            border-radius: 4px;
+        }
+    </style>
 </head>
+<body class="bg-gray-50 font-sans antialiased">
 
-<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-effect border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pizza-red to-pizza-orange rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+                        🍕
+                    </div>
+                    <div>
+                        <h1 class="font-display text-2xl font-black text-gray-900 tracking-tight">Santy's</h1>
+                        <p class="text-xs text-pizza-red font-bold tracking-widest uppercase">Pizzeria</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#menu" class="text-gray-700 hover:text-pizza-red font-medium transition">Menú</a>
+                    <a href="#nosotros" class="text-gray-700 hover:text-pizza-red font-medium transition">Nosotros</a>
+                    <a href="#contacto" class="text-gray-700 hover:text-pizza-red font-medium transition">Contacto</a>
+                    <button onclick="toggleCart()" class="relative bg-pizza-red text-white px-6 py-2 rounded-full font-semibold hover:bg-red-700 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <span>🛒 Carrito</span>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-pizza-yellow text-gray-900 text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                    </button>
+                </div>
 
-<!-- NAV -->
+                <button onclick="toggleCart()" class="md:hidden relative p-2 text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span id="cart-badge-mobile" class="absolute top-0 right-0 bg-pizza-red text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center opacity-0">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
 
-<nav class="fixed w-full bg-white shadow z-50">
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden pizza-pattern">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8 animate-slide-up">
+                    <div class="inline-flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-md border border-gray-200">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-sm font-semibold text-gray-700">Abierto ahora - Delivery gratis en zonas seleccionadas</span>
+                    </div>
+                    
+                    <h1 class="font-display text-5xl lg:text-7xl font-black text-gray-900 leading-tight">
+                        El auténtico sabor <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-pizza-red to-pizza-orange">italiano</span> en casa
+                    </h1>
+                    
+                    <p class="text-xl text-gray-600 max-w-lg leading-relaxed">
+                        Ingredientes frescos, masa artesanal y el amor de siempre. Santy's Pizzeria lleva la tradición napolitana a tu puerta en minutos.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#menu" class="inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-pizza-red to-pizza-orange text-white font-bold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition text-lg">
+                            Ordenar Ahora
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                        <button onclick="document.getElementById('promo-modal').classList.remove('hidden')" class="inline-flex justify-center items-center px-8 py-4 bg-white text-gray-900 font-bold rounded-full shadow-md border-2 border-gray-200 hover:border-pizza-red hover:text-pizza-red transition text-lg">
+                            Ver Promos
+                        </button>
+                    </div>
 
-<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                    <div class="flex items-center space-x-8 pt-4">
+                        <div class="text-center">
+                            <p class="text-3xl font-black text-gray-900">30'</p>
+                            <p class="text-sm text-gray-500">Tiempo promedio</p>
+                        </div>
+                        <div class="w-px h-12 bg-gray-300"></div>
+                        <div class="text-center">
+                            <p class="text-3xl font-black text-gray-900">4.9</p>
+                            <p class="text-sm text-gray-500">⭐ Rating</p>
+                        </div>
+                        <div class="w-px h-12 bg-gray-300"></div>
+                        <div class="text-center">
+                            <p class="text-3xl font-black text-gray-900">15k+</p>
+                            <p class="text-sm text-gray-500">Clientes felices</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative lg:h-[600px] flex items-center justify-center">
+                    <div class="absolute w-96 h-96 bg-pizza-yellow rounded-full opacity-20 blur-3xl animate-pulse"></div>
+                    <div class="absolute w-72 h-72 bg-pizza-red rounded-full opacity-20 blur-3xl animate-pulse delay-1000"></div>
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop&q=80" 
+                         alt="Pizza artesanal" 
+                         class="relative z-10 w-full max-w-lg rounded-3xl shadow-2xl animate-float object-cover h-auto transform hover:scale-105 transition duration-500">
+                    
+                    <!-- Floating badges -->
+                    <div class="absolute top-10 -left-4 bg-white p-4 rounded-2xl shadow-xl animate-bounce-slow z-20">
+                        <p class="text-sm font-bold text-gray-900">🔥 Más vendida</p>
+                        <p class="text-xs text-gray-500">Pepperoni Deluxe</p>
+                    </div>
+                    
+                    <div class="absolute bottom-20 -right-4 bg-white p-4 rounded-2xl shadow-xl animate-bounce-slow z-20" style="animation-delay: 1s;">
+                        <p class="text-sm font-bold text-gray-900">⭐ 4.9</p>
+                        <p class="text-xs text-gray-500">Calificación</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<h1 class="text-2xl font-bold">🍕 Santy's</h1>
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">Nuestro Menú</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Selecciona tus favoritas. Todas incluyen salsa de tomate artesanal y queso mozzarella premium.</p>
+                
+                <!-- Category Filter -->
+                <div class="flex flex-wrap justify-center gap-4 mt-8">
+                    <button onclick="filterPizzas('all')" class="filter-btn active px-6 py-2 rounded-full font-semibold transition bg-pizza-red text-white" data-category="all">Todas</button>
+                    <button onclick="filterPizzas('clasica')" class="filter-btn px-6 py-2 rounded-full font-semibold transition bg-gray-200 text-gray-700 hover:bg-gray-300" data-category="clasica">Clásicas</button>
+                    <button onclick="filterPizzas('especial')" class="filter-btn px-6 py-2 rounded-full font-semibold transition bg-gray-200 text-gray-700 hover:bg-gray-300" data-category="especial">Especiales</button>
+                    <button onclick="filterPizzas('vegetariana')" class="filter-btn px-6 py-2 rounded-full font-semibold transition bg-gray-200 text-gray-700 hover:bg-gray-300" data-category="vegetariana">Vegetarianas</button>
+                </div>
+            </div>
 
-<button onclick="toggleCart()" class="bg-red-600 text-white px-4 py-2 rounded">
-Carrito (<span id="cart-count">0</span>)
-</button>
+            <div id="pizza-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pizzas will be injected here by JavaScript -->
+            </div>
+        </div>
+    </section>
 
-</div>
+    <!-- Features Section -->
+    <section class="py-20 bg-pizza-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-lg text-center transform hover:-translate-y-2 transition">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">🥬</div>
+                    <h3 class="font-bold text-xl mb-2">Ingredientes Frescos</h3>
+                    <p class="text-gray-600">Seleccionamos diariamente los mejores vegetales y carnes para tu pizza.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg text-center transform hover:-translate-y-2 transition">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">🔥</div>
+                    <h3 class="font-bold text-xl mb-2">Horno de Piedra</h3>
+                    <p class="text-gray-600">Cocinadas a 400°C en horno tradicional para ese sabor único.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-lg text-center transform hover:-translate-y-2 transition">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">🚀</div>
+                    <h3 class="font-bold text-xl mb-2">Delivery Rápido</h3>
+                    <p class="text-gray-600">Promesa de entrega en 30 minutos o tu pizza es gratis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</nav>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-pizza-red rounded-full flex items-center justify-center text-xl">🍕</div>
+                        <span class="font-display text-2xl font-bold">Santy's</span>
+                    </div>
+                    <p class="text-gray-400">Auténtica pizza artesanal con delivery a domicilio. Tradición y calidad desde 2010.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Horario</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Lunes - Jueves: 12pm - 10pm</li>
+                        <li>Viernes - Sábado: 12pm - 11pm</li>
+                        <li>Domingo: 1pm - 9pm</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>📞 (555) 123-4567</li>
+                        <li>📧 hola@santyspizza.com</li>
+                        <li>📍 Av. Principal #123, Ciudad</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Síguenos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pizza-red transition">IG</a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pizza-red transition">FB</a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pizza-red transition">TW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p>&copy; 2026 Santy's Pizzeria. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
-<div class="h-24"></div>
+    <!-- Cart Sidebar -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden transition-opacity opacity-0"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 cart-sidebar cart-closed flex flex-col">
+        <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+            <h2 class="font-display text-2xl font-bold text-gray-900">Tu Pedido</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700 p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <div class="text-center text-gray-500 py-12">
+                <div class="text-6xl mb-4">🛒</div>
+                <p>Tu carrito está vacío</p>
+                <p class="text-sm mt-2">¡Agrega algunas pizzas deliciosas!</p>
+            </div>
+        </div>
 
-<!-- MENU -->
+        <div class="border-t border-gray-200 p-6 bg-gray-50">
+            <div class="space-y-2 mb-4">
+                <div class="flex justify-between text-gray-600">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between text-gray-600">
+                    <span>Envío</span>
+                    <span class="text-green-600 font-semibold">Gratis</span>
+                </div>
+                <div class="flex justify-between text-xl font-bold text-gray-900 pt-2 border-t border-gray-300">
+                    <span>Total</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+            </div>
+            <button onclick="checkout()" class="w-full bg-gradient-to-r from-pizza-red to-pizza-orange text-white py-3 rounded-full font-bold text-lg hover:shadow-lg transform hover:-translate-y-0.5 transition disabled:opacity-50 disabled:cursor-not-allowed" id="checkout-btn" disabled>
+                Proceder al Pago
+            </button>
+        </div>
+    </div>
 
-<section class="max-w-7xl mx-auto px-6">
+    <!-- Promo Modal -->
+    <div id="promo-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 relative animate-slide-up">
+            <button onclick="document.getElementById('promo-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center">
+                <div class="w-20 h-20 bg-pizza-yellow rounded-full flex items-center justify-center text-4xl mx-auto mb-4 animate-bounce">🎉</div>
+                <h3 class="font-display text-2xl font-bold mb-2">¡Promo Especial!</h3>
+                <p class="text-gray-600 mb-6">2x1 en pizzas medianas los martes y miércoles. Usa el código:</p>
+                <div class="bg-gray-100 p-4 rounded-xl mb-6">
+                    <code class="text-2xl font-bold text-pizza-red tracking-widest">SANTY2X1</code>
+                </div>
+                <button onclick="document.getElementById('promo-modal').classList.add('hidden')" class="w-full bg-pizza-red text-white py-3 rounded-full font-bold hover:bg-red-700 transition">
+                    ¡Quiero mi pizza!
+                </button>
+            </div>
+        </div>
+    </div>
 
-<h2 class="text-4xl font-bold mb-10 text-center">Nuestro Menú</h2>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-full shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center space-x-2">
+        <span id="toast-icon">✅</span>
+        <span id="toast-message">Agregado al carrito</span>
+    </div>
 
-<div id="pizza-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-
-</section>
-
-
-<!-- CART -->
-
-<div id="cart-sidebar" class="cart-sidebar cart-closed fixed right-0 top-0 h-full w-96 bg-white shadow-lg p-6 z-50">
-
-<h2 class="text-xl font-bold mb-4">Tu pedido</h2>
-
-<div id="cart-items" class="space-y-4"></div>
-
-<div class="mt-6 border-t pt-4">
-
-<p class="font-bold">Total: $<span id="cart-total">0</span></p>
-
-<button onclick="checkout()" class="mt-4 w-full bg-red-600 text-white py-3 rounded">
-Finalizar pedido
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-const pizzas=[
-
+    <script>
+        // Data
+const pizzas = [
 {
-id:1,
-name:"Pepperoni",
-description:"Salsa tomate, mozzarella y pepperoni",
-price:{s:169,m:199,l:219},
-category:"clasica",
-image:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600"
+id: 1,
+name: "Pepperoni",
+description: "Salsa de tomate, mozzarella y pepperoni",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1628840042765-356cda07504e"
 },
-
 {
-id:2,
-name:"Jamón",
-description:"Mozzarella y jamón",
-price:{s:169,m:199,l:219},
-category:"clasica",
-image:"https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=600"
+id: 2,
+name: "Jamón",
+description: "Salsa de tomate, mozzarella y jamón",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212"
 },
-
 {
-id:3,
-name:"Chorizo",
-description:"Mozzarella y chorizo",
-price:{s:169,m:199,l:219},
-category:"clasica",
-image:"https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=600"
+id: 3,
+name: "Chorizo",
+description: "Salsa de tomate, mozzarella y chorizo",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3"
 },
-
 {
-id:4,
-name:"3 Quesos",
-description:"Mozzarella, gouda y cheddar",
-price:{s:169,m:199,l:219},
-category:"clasica",
-image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600"
+id: 4,
+name: "3 Quesos",
+description: "Mozzarella, gouda y cheddar",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1513104890138-7c749659a591"
 },
-
 {
-id:5,
-name:"Hawaiana",
-description:"Jamón y piña",
-price:{s:189,m:209,l:249},
-category:"especial",
-image:"https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600"
+id: 5,
+name: "Hawaiana",
+description: "Jamón y piña",
+price: {s:189, m:209, l:249},
+category: "especial",
+image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38"
 },
-
 {
-id:6,
-name:"Mexicana",
-description:"Chorizo, cebolla y jalapeño",
-price:{s:189,m:209,l:249},
-category:"especial",
-image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600"
+id: 6,
+name: "Mexicana",
+description: "Chorizo, cebolla y jalapeño",
+price: {s:189, m:209, l:249},
+category: "especial",
+image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002"
 },
-
 {
-id:7,
-name:"3 Carnes",
-description:"Pepperoni, jamón y chorizo",
-price:{s:189,m:209,l:249},
-category:"especial",
-image:"https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=600"
+id: 7,
+name: "3 Carnes",
+description: "Pepperoni, jamón y chorizo",
+price: {s:189, m:209, l:249},
+category: "especial",
+image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212"
 }
-
 ];
 
-let cart=[];
+        let cart = [];
 
-document.addEventListener("DOMContentLoaded",()=>{
-renderPizzas();
-});
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPizzas('all');
+        });
 
-function renderPizzas(){
-
-const grid=document.getElementById("pizza-grid");
-
-grid.innerHTML="";
-
-pizzas.forEach(pizza=>{
-
-const card=document.createElement("div");
-
-card.className="pizza-card bg-white rounded-xl shadow overflow-hidden";
-
-card.innerHTML=`
-
-<img src="${pizza.image}" class="w-full h-60 object-cover">
-
-<div class="p-6">
-
-<h3 class="text-xl font-bold mb-2">${pizza.name}</h3>
-
-<p class="text-gray-600 mb-4">${pizza.description}</p>
-
-<p class="font-bold text-red-600 mb-2">Desde $${pizza.price.s}</p>
-
-<select id="size-${pizza.id}" class="border w-full p-2 mb-4 rounded">
-
-<option value="s">35cm - $${pizza.price.s}</option>
-<option value="m">40cm - $${pizza.price.m}</option>
-<option value="l">45cm - $${pizza.price.l}</option>
-
+        // Render Pizzas
+        function renderPizzas(category) {
+            const grid = document.getElementById('pizza-grid');
+            grid.innerHTML = '';
+            
+            const filtered = category === 'all' ? pizzas : pizzas.filter(p => p.category === category);
+            
+            filtered.forEach((pizza, index) => {
+                const card = document.createElement('div');
+                card.className = 'pizza-card bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl transition duration-300 opacity-0';
+                card.style.animation = `slideUp 0.5s ease-out ${index * 0.1}s forwards`;
+                
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-64">
+                        <img src="${pizza.image}" alt="${pizza.name}" class="pizza-img w-full h-full object-cover transition duration-500">
+                        <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+${pizza.tags ? pizza.tags.map(tag => `<span class="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-gray-800 shadow-sm">${tag}</span>`).join('') : ''}
+</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-display text-xl font-bold text-gray-900">${pizza.name}</h3>
+                            <span class="text-2xl font-black text-pizza-red">Desde $${pizza.price.s}</span>
+                        </div>
+                        <p class="text-gray-600 mb-6 line-clamp-2">${pizza.description}</p>
+                        <select id="size-${pizza.id}" class="w-full border rounded-lg p-2 mb-3">
+<option value="s">35 cm - $${pizza.price.s}</option>
+<option value="m">40 cm - $${pizza.price.m}</option>
+<option value="l">45 cm - $${pizza.price.l}</option>
 </select>
+                        <button onclick="addToCart(${pizza.id})" class="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-pizza-red transition flex items-center justify-center space-x-2 group">
+                            <span>Agregar al carrito</span>
+                            <svg class="w-5 h-5 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-<button onclick="addToCart(${pizza.id})" class="w-full bg-black text-white py-3 rounded">
-Agregar al carrito
-</button>
+        // Filter
+        function filterPizzas(category) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if(btn.dataset.category === category) {
+                    btn.classList.remove('bg-gray-200', 'text-gray-700');
+                    btn.classList.add('bg-pizza-red', 'text-white');
+                } else {
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                    btn.classList.remove('bg-pizza-red', 'text-white');
+                }
+            });
+            renderPizzas(category);
+        }
 
-</div>
+        // Cart Functions
+        function addToCart(pizzaId){
 
-`;
+const pizza = pizzas.find(p => p.id === pizzaId);
 
-grid.appendChild(card);
+const size = document.getElementById(`size-${pizzaId}`).value;
 
-});
+const price = pizza.price[size];
 
-}
+const sizeText = size === "s" ? "35cm" : size === "m" ? "40cm" : "45cm";
 
-function addToCart(id){
+const existingItem = cart.find(item => item.id === pizzaId && item.size === size);
 
-const pizza=pizzas.find(p=>p.id===id);
-
-const size=document.getElementById(`size-${id}`).value;
-
-const price=pizza.price[size];
-
-const sizeText=size==="s"?"35cm":size==="m"?"40cm":"45cm";
-
-cart.push({
-name:pizza.name,
-price:price,
-size:sizeText
-});
-
-updateCart();
-
-}
-
-function updateCart(){
-
-const items=document.getElementById("cart-items");
-
-items.innerHTML="";
-
-let total=0;
-
-cart.forEach((item,index)=>{
-
-total+=item.price;
-
-items.innerHTML+=`
-
-<div class="flex justify-between border-b pb-2">
-
-<p>${item.name} (${item.size})</p>
-
-<p>$${item.price}</p>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("cart-total").innerText=total;
-
-document.getElementById("cart-count").innerText=cart.length;
-
-}
-
-function toggleCart(){
-
-const sidebar=document.getElementById("cart-sidebar");
-
-if(sidebar.classList.contains("cart-closed")){
-sidebar.classList.remove("cart-closed");
-sidebar.classList.add("cart-open");
+if(existingItem){
+existingItem.quantity++;
 }else{
-sidebar.classList.remove("cart-open");
-sidebar.classList.add("cart-closed");
-}
-
-}
-
-function checkout(){
-
-if(cart.length===0){
-alert("Tu carrito está vacío");
-return;
-}
-
-let message="Pedido Santy's Pizzeria\n\n";
-
-cart.forEach(item=>{
-message+=`${item.name} ${item.size} - $${item.price}\n`;
+cart.push({
+...pizza,
+size:size,
+sizeText:sizeText,
+price:price,
+quantity:1
 });
-
-let total=cart.reduce((a,b)=>a+b.price,0);
-
-message+=`\nTotal: $${total}`;
-
-alert(message);
-
-cart=[];
+}
 
 updateCart();
 
-toggleCart();
+showToast(`🍕 ${pizza.name} ${sizeText} agregada`);
 
 }
 
-</script>
+        function removeFromCart(pizzaId) {
+            cart = cart.filter(item => item.id !== pizzaId);
+            updateCart();
+        }
 
+        function updateQuantity(pizzaId, change) {
+            const item = cart.find(item => item.id === pizzaId);
+            if(item) {
+                item.quantity += change;
+                if(item.quantity <= 0) {
+                    removeFromCart(pizzaId);
+                } else {
+                    updateCart();
+                }
+            }
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            const badgeMobile = document.getElementById('cart-badge-mobile');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Update badges
+            if(totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('opacity-0');
+                badgeMobile.textContent = totalItems;
+                badgeMobile.classList.remove('opacity-0');
+                checkoutBtn.disabled = false;
+            } else {
+                badge.classList.add('opacity-0');
+                badgeMobile.classList.add('opacity-0');
+                checkoutBtn.disabled = true;
+            }
+            
+            // Update totals
+            document.getElementById('cart-subtotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
+            
+            // Render items
+            if(cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center text-gray-500 py-12">
+                        <div class="text-6xl mb-4">🛒</div>
+                        <p>Tu carrito está vacío</p>
+                        <p class="text-sm mt-2">¡Agrega algunas pizzas deliciosas!</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="flex gap-4 bg-gray-50 p-4 rounded-2xl">
+                        <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-900">${item.name}</h4>
+                            <p class="text-pizza-red font-bold">$${item.price}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100">-</button>
+                                <span class="font-semibold">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 self-start">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if(sidebar.classList.contains('cart-closed')) {
+                sidebar.classList.remove('cart-closed');
+                sidebar.classList.add('cart-open');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.remove('cart-open');
+                sidebar.classList.add('cart-closed');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+                document.body.style.overflow = '';
+            }
+        }
+
+        function checkout() {
+            if(cart.length === 0) return;
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            alert(`¡Gracias por tu pedido en Santy's Pizzeria!\n\nTotal: $${total.toFixed(2)}\n\nEn un momento te contactaremos para confirmar la entrega. 🍕`);
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
