@@ -193,14 +193,13 @@
             
             updateCartUI();
             showToast(`🔥 ${pizza.name} (${sizeLabel}) en el carrito`);
+            // El carrito NO se despliega solo por tu petición anterior
         }
 
         function updateCartUI() {
             const container = document.getElementById('cart-items');
             const totalEl = document.getElementById('cart-total');
             const badge = document.getElementById('cart-badge');
-            const cartBtn = document.getElementById('main-cart-btn');
-
             let total = 0;
             let count = 0;
 
@@ -222,7 +221,7 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <p class="font-bold text-pizza-dark">$${(item.currentPrice * item.quantity)}</p>
+                                <p class="font-bold text-pizza-dark">$${(item.currentPrice * item.quantity).toFixed(2)}</p>
                                 <button onclick="removeItem(${idx})" class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Eliminar</button>
                             </div>
                         </div>
@@ -230,16 +229,16 @@
                 }).join('');
             }
 
-            // Efecto de pulso
-            if(count > 0) {
-                cartBtn.classList.remove('pulse-animation');
-                void cartBtn.offsetWidth; 
-                cartBtn.classList.add('pulse-animation');
-            }
-
             totalEl.innerText = `$${total.toFixed(2)}`;
             badge.innerText = count;
             badge.style.opacity = count > 0 ? '1' : '0';
+            
+            // Efecto de pulso en el botón del carrito
+            const cartBtn = document.querySelector('button[onclick="toggleCart()"]');
+            cartBtn.classList.remove('pulse-animation');
+            void cartBtn.offsetWidth; 
+            cartBtn.classList.add('pulse-animation');
+
             document.getElementById('checkout-btn').disabled = count === 0;
         }
 
@@ -268,6 +267,28 @@
         function openCheckout() { document.getElementById('checkout-modal').classList.remove('hidden'); }
         function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
+        // --- VALIDACIONES EN TIEMPO REAL ---
+        document.getElementById('cust-phone').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length === 10) {
+                this.classList.remove('input-error');
+                this.classList.add('input-success');
+            } else {
+                this.classList.remove('input-success');
+            }
+        });
+
+        document.getElementById('cust-name').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+            if (this.value.trim().length >= 3) {
+                this.classList.remove('input-error');
+                this.classList.add('input-success');
+            } else {
+                this.classList.remove('input-success');
+            }
+        });
+
+        // --- FUNCIÓN DE ENVÍO ACTUALIZADA ---
         function sendWhatsApp() {
             const fields = {
                 name: document.getElementById('cust-name'),
@@ -281,33 +302,31 @@
             Object.values(fields).forEach(f => f.classList.remove('input-error'));
             let hasError = false;
 
-            // VALIDACIÓN NOMBRE
-            if (!fields.name.value.trim()) { fields.name.classList.add('input-error'); hasError = true; }
-
-            // VALIDACIÓN TELÉFONO (10 DÍGITOS EXACTOS)
-            const phoneValue = fields.phone.value.trim().replace(/\D/g, ''); 
-            if (phoneValue.length !== 10) { 
-                fields.phone.classList.add('input-error'); 
-                showToast("⚠️ El teléfono debe ser de 10 dígitos.");
+            // Validar Nombre (mínimo 3 letras)
+            if (fields.name.value.trim().length < 3) { 
+                fields.name.classList.add('input-error'); 
                 hasError = true; 
             }
-
-            // VALIDACIÓN DELIVERY
+            // Validar Teléfono (exactamente 10 dígitos)
+            if (fields.phone.value.trim().length !== 10) { 
+                fields.phone.classList.add('input-error'); 
+                hasError = true; 
+            }
+            // Validar campos de domicilio si aplica
             if (type === 'delivery') {
                 if (!fields.address.value.trim()) { fields.address.classList.add('input-error'); hasError = true; }
                 if (!fields.cross.value.trim()) { fields.cross.classList.add('input-error'); hasError = true; }
             }
 
             if (hasError) {
-                showToast("⚠️ Llena los campos en rojo correctamente.");
+                showToast("⚠️ Revisa los campos marcados en rojo.");
                 return;
             }
 
-            // Construir Ticket
             let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n`;
             msg += `━━━━━━━━━━━━━━\n`;
             msg += `👤 *Cliente:* ${fields.name.value.trim()}\n`;
-            msg += `📞 *Tel:* ${phoneValue}\n`;
+            msg += `📞 *Tel:* ${fields.phone.value.trim()}\n`;
             msg += `📦 *Tipo:* ${type === 'delivery' ? '🛵 Entrega a domicilio' : '🏠 Recoge en local'}\n`;
             
             if (type === 'delivery') {
@@ -316,13 +335,11 @@
             }
             if (notes) msg += `📝 *Nota:* ${notes}\n`;
             
-            msg += `━━━━━━━━━━━━━━\n`;
-            msg += `*PRODUCTOS:*\n`;
+            msg += `━━━━━━━━━━━━━━\n*PRODUCTOS:*\n`;
             cart.forEach(i => {
                 msg += `• ${i.quantity}x ${i.name} [${i.sizeLabel}] - $${(i.currentPrice * i.quantity).toFixed(2)}\n`;
             });
             msg += `━━━━━━━━━━━━━━\n`;
-            
             const total = cart.reduce((s, i) => s + (i.currentPrice * i.quantity), 0);
             msg += `💰 *TOTAL A PAGAR: $${total.toFixed(2)}*`;
 
@@ -337,6 +354,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', renderPizzas);
+
     </script>
 </body>
 </html>
