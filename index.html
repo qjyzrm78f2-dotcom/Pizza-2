@@ -83,7 +83,7 @@
     </div>
 
     <div id="checkout-modal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-3xl w-full max-w-md">
+        <div class="bg-white p-8 rounded-3xl w-full max-w-md shadow-2xl">
             <h2 class="text-2xl font-bold mb-4">Datos de Entrega</h2>
             <div class="space-y-4">
                 <input id="c-name" type="text" placeholder="Tu Nombre" class="w-full border p-3 rounded-xl outline-none">
@@ -92,7 +92,7 @@
                     <option value="recoger">🏠 Recoger en Sucursal</option>
                     <option value="delivery">🛵 Envío a Domicilio</option>
                 </select>
-                <input id="c-dir" type="text" placeholder="Calle, número y colonia" class="w-full border p-3 rounded-xl hidden">
+                <input id="c-dir" type="text" placeholder="Calle, número y colonia" class="w-full border p-3 rounded-xl hidden text-sm">
                 <button onclick="sendWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold uppercase tracking-widest">Enviar Pedido 🚀</button>
                 <button onclick="closeCheckout()" class="w-full text-gray-400 font-bold mt-2">Cerrar</button>
             </div>
@@ -125,8 +125,8 @@
             { id: 50, name: "Papas Gajo", cat: "snacks", price: {s:79, m:99}, labels: {s:"220g", m:"350g"} },
             { id: 51, name: "Alitas", cat: "snacks", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, opts: ["BBQ", "Búfalo", "Mango Habanero"] },
             
-            { id: 60, name: "Refresco 600ml", cat: "bebidas", price: 25, opts: sRefresco },
-            { id: 61, name: "Refresco 2L", cat: "bebidas", price: 45, opts: sRefresco }
+            { id: 60, name: "Refresco", cat: "bebidas", price: {s:25, m:45}, labels: {s:"600ml", m:"2 Litros"}, opts: sRefresco },
+            { id: 61, name: "Coca Cola", cat: "bebidas", price: {s:35, m:65}, labels: {s:"600ml", m:"2 Litros"} }
         ];
 
         let cart = [];
@@ -135,12 +135,12 @@
             combos.forEach(c => {
                 const html = `
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-full">
-                        <h3 class="font-extrabold text-pizza-dark leading-tight mb-1">${c.name}</h3>
-                        <p class="text-gray-400 text-[10px] mb-3 uppercase font-bold tracking-wider">${c.desc}</p>
+                        <h3 class="font-extrabold text-pizza-dark leading-tight mb-1 uppercase text-sm">${c.name}</h3>
+                        <p class="text-gray-400 text-[9px] mb-3 uppercase font-bold tracking-wider">${c.desc}</p>
                         <p class="text-pizza-red font-black text-2xl mb-4">$${c.price}</p>
                         <div class="space-y-2 mb-4 mt-auto">
                             ${c.selects.map((s, i) => `<select id="c-sel-${c.id}-${i}" class="w-full border-2 border-gray-50 p-2 rounded-xl text-xs font-bold">${s.opts.map(o => `<option>${o}</option>`).join('')}</select>`).join('')}
-                            ${c.hasUpgrade ? `<label class="flex items-center gap-2 bg-yellow-50 p-3 rounded-xl border border-yellow-200 cursor-pointer"><input type="checkbox" id="upg-${c.id}" class="accent-pizza-red"><span class="text-[10px] font-black text-pizza-dark uppercase">Cambiar papas por Alitas 250g (+$36)</span></label>` : ''}
+                            ${c.hasUpgrade ? `<label class="flex items-center gap-2 bg-yellow-50 p-3 rounded-xl border border-yellow-200 cursor-pointer"><input type="checkbox" id="upg-${c.id}" class="accent-pizza-red"><span class="text-[10px] font-black text-pizza-dark uppercase tracking-tighter">Cambiar papas por Alitas 250g (+$36)</span></label>` : ''}
                         </div>
                         <button onclick="addCombo(${c.id})" class="w-full bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir Dúo</button>
                     </div>`;
@@ -152,34 +152,32 @@
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm border">
                         <img src="${p.img}" class="h-40 w-full object-cover">
                         <div class="p-5">
-                            <h3 class="font-bold text-pizza-dark uppercase text-sm mb-3">${p.name}</h3>
-                            <select id="psize-${p.id}" class="w-full border-2 border-gray-50 p-2 rounded-xl mb-4 text-xs font-bold">
+                            <h3 class="font-bold text-pizza-dark uppercase text-xs mb-3">${p.name}</h3>
+                            <select id="psize-${p.id}" class="w-full border-2 border-gray-50 p-2 rounded-xl mb-4 text-[11px] font-bold">
                                 <option value="s">35cm - $${p.price.s}</option>
                                 <option value="m">40cm - $${p.price.m}</option>
                                 <option value="l">45cm - $${p.price.l}</option>
                             </select>
-                            <button onclick="addPizzaInd(${p.id})" class="w-full bg-pizza-dark text-white py-2 rounded-xl font-bold text-xs uppercase">Añadir</button>
+                            <button onclick="addPizzaInd(${p.id})" class="w-full bg-pizza-dark text-white py-2 rounded-xl font-bold text-[10px] uppercase">Añadir</button>
                         </div>
                     </div>`;
             });
 
             individuales.filter(x => x.cat !== "pizzas").forEach(item => {
                 const target = item.cat === "snacks" ? "grid-snacks" : "grid-bebidas";
-                let inputs = "";
-                if(item.price.s) {
-                    inputs = `<select id="size-${item.id}" class="text-[10px] border p-1 rounded-md font-bold">
-                        <option value="s">${item.labels.s} - $${item.price.s}</option>
-                        <option value="m">${item.labels.m} - $${item.price.m}</option>
-                    </select>`;
-                }
+                let inputs = `<select id="size-${item.id}" class="text-[10px] border p-1 rounded-md font-bold">
+                    <option value="s">${item.labels.s} - $${item.price.s}</option>
+                    <option value="m">${item.labels.m} - $${item.price.m}</option>
+                </select>`;
+                
                 document.getElementById(target).innerHTML += `
                     <div class="bg-white p-4 rounded-2xl flex justify-between items-center border shadow-sm">
                         <div class="flex flex-col gap-1">
-                            <p class="font-bold text-sm text-pizza-dark uppercase">${item.name}</p>
-                            ${item.opts ? `<select id="opt-${item.id}" class="text-[10px] border p-1 rounded-md">${item.opts.map(o => `<option>${o}</option>`).join('')}</select>` : ''}
+                            <p class="font-bold text-xs text-pizza-dark uppercase">${item.name}</p>
+                            ${item.opts ? `<select id="opt-${item.id}" class="text-[10px] border p-1 rounded-md text-pizza-red font-bold">${item.opts.map(o => `<option>${o}</option>`).join('')}</select>` : ''}
                             ${inputs}
                         </div>
-                        <button onclick="addAdvancedItem(${item.id})" class="bg-pizza-gold text-pizza-dark px-4 py-2 rounded-full font-bold text-xs">$+ Añadir</button>
+                        <button onclick="addAdvancedItem(${item.id})" class="bg-pizza-gold text-pizza-dark px-4 py-2 rounded-full font-bold text-[10px] tracking-tighter">+ AÑADIR</button>
                     </div>`;
             });
         }
@@ -212,15 +210,11 @@
 
         function addAdvancedItem(id) {
             const item = individuales.find(x => x.id === id);
-            let p = item.price;
-            let det = "";
-            if(item.price.s) {
-                const s = document.getElementById(`size-${id}`).value;
-                p = item.price[s];
-                det = item.labels[s];
-            }
-            if(item.opts) det += (det ? " / " : "") + document.getElementById(`opt-${id}`).value;
-            cart.push({ name: item.name, price: p, details: det || "Unidad" });
+            const s = document.getElementById(`size-${id}`).value;
+            const p = item.price[s];
+            let det = item.labels[s];
+            if(item.opts) det += " (" + document.getElementById(`opt-${id}`).value + ")";
+            cart.push({ name: item.name, price: p, details: det });
             updateUI();
         }
 
@@ -230,8 +224,8 @@
             container.innerHTML = cart.map((item, idx) => {
                 total += item.price;
                 return `<div class="bg-gray-50 p-3 rounded-xl flex justify-between items-center text-xs border">
-                    <div><p class="font-black text-pizza-dark uppercase">${item.name}</p><p class="text-pizza-red font-bold text-[9px]">${item.details}</p></div>
-                    <div class="text-right"><p class="font-black">$${item.price}</p><button onclick="cart.splice(${idx},1);updateUI()" class="text-gray-400 text-[8px] underline uppercase">Eliminar</button></div>
+                    <div><p class="font-black text-pizza-dark uppercase text-[10px]">${item.name}</p><p class="text-pizza-red font-bold text-[9px]">${item.details}</p></div>
+                    <div class="text-right"><p class="font-black">$${item.price}</p><button onclick="cart.splice(${idx},1);updateUI()" class="text-gray-400 text-[8px] underline uppercase">Quitar</button></div>
                 </div>`;
             }).join('');
             document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
@@ -251,7 +245,7 @@
             const n = document.getElementById('c-name').value;
             const p = document.getElementById('c-phone').value;
             if(n.length < 3 || p.length !== 10) return alert("Revisa tu nombre y teléfono");
-            let msg = `🍕 *SANTY'S PIZZERÍA - NUEVO PEDIDO*\n👤 *Cliente:* ${n}\n📦 *Tipo:* ${document.getElementById('c-type').value}\n`;
+            let msg = `🍕 *SANTY'S PIZZERÍA - NUEVO PEDIDO*\n👤 *Cliente:* ${n}\n📞 *Tel:* ${p}\n📦 *Tipo:* ${document.getElementById('c-type').value}\n`;
             if(document.getElementById('c-type').value === 'delivery') msg += `📍 *Dir:* ${document.getElementById('c-dir').value}\n`;
             msg += `━━━━━━━━━━━━━━\n`;
             cart.forEach(i => msg += `• ${i.name} (${i.details}) - $${i.price}\n`);
