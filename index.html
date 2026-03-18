@@ -152,21 +152,24 @@
 
     <script>
         const menuItems = [
-            { id: 1, category: "pizza", name: "Pepperoni", description: "Clásica con pepperoni crujiente", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
-            { id: 2, category: "pizza", name: "Jamón", description: "Jamón de pierna y mozzarella", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
-            { id: 3, category: "pizza", name: "Chorizo", description: "Chorizo premium local", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" },
+            // PIZZAS
+            { id: 1, category: "pizza", name: "Pepperoni", description: "Salsa de tomate, mozzarella y pepperoni", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
+            { id: 2, category: "pizza", name: "Jamón", description: "Clásica de jamón de pierna y queso", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
+            { id: 3, category: "pizza", name: "Chorizo", description: "Sabor local con chorizo premium", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" },
             { id: 4, category: "pizza", name: "3 Quesos", description: "Mozzarella, Gouda y Cheddar", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
             { id: 5, category: "pizza", name: "Hawaiana", description: "Piña y jamón", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
             { id: 6, category: "pizza", name: "Mexicana", description: "Chorizo y jalapeños", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
-            
-            { id: 8, category: "snack", name: "Papas Gajo", description: "Con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
-            { id: 9, category: "snack", name: "Alitas", description: "Elige tu salsa", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
-            { id: 10, category: "bebida", name: "Pepsi / Sabores", description: "Fríos", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
-            { id: 11, category: "bebida", name: "Coca Cola", description: "Original", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" },
 
+            // SNACKS Y BEBIDAS
+            { id: 8, category: "snack", name: "Papas Gajo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
+            { id: 9, category: "snack", name: "Alitas", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
+            { id: 10, category: "bebida", name: "Pepsi / Sabores", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
+            { id: 11, category: "bebida", name: "Coca Cola", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" },
+
+            // COMBOS
             { 
                 id: 101, category: "combo", name: "Combo Pareja", 
-                description: "Pizza 35cm (Básica) + Papas + 2 Refrescos 600ml", 
+                description: "Pizza 35cm + Papas + 2 Refrescos 600ml", 
                 price: {s:299}, labels: {s:"Precio Especial"},
                 config: [
                     { label: "Pizza (Básica)", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos"] },
@@ -178,12 +181,13 @@
             { 
                 id: 102, category: "combo", name: "Paquete Santy's", 
                 description: "Pizza 45cm + Alitas 400g + Refresco 2L", 
-                price: {s:429, m:464}, labels: {s:"Pizza Especialidad", m:"Mitad y Mitad (+$35)"},
+                price: {s:429, m:464}, labels: {s:"Especialidad", m:"Mitad y Mitad (+$35)"},
                 config: [
-                    { label: "Sabor Pizza", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos", "Hawaiana", "Mexicana"] },
                     { label: "Salsa Alitas", opts: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"] },
                     { label: "Sabor Refresco", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] }
                 ],
+                // Estas son las opciones específicas para cuando eligen Mitad y Mitad
+                halfOptions: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos", "Hawaiana", "Mexicana"],
                 image: "https://images.unsplash.com/photo-1544982503-9f984c14501a" 
             }
         ];
@@ -212,17 +216,25 @@
                 if(p.price.l) sizeOptions += `<option value="l">45cm - $${p.price.l}</option>`;
 
                 let extra = "";
+                // Configuración estándar de combos
                 if (p.config) {
-                    extra = p.config.map((c, idx) => `
+                    extra = `<div id="config-area-${p.id}">` + p.config.map((c, idx) => `
                         <label class="text-[10px] font-bold text-gray-400 uppercase">${c.label}</label>
                         <select id="conf-${p.id}-${idx}" class="w-full border p-2 rounded-lg mb-2 text-sm">
                             ${c.opts.map(o => `<option value="${o}">${o}</option>`).join('')}
-                        </select>`).join('');
+                        </select>`).join('') + `</div>`;
                 } else if (p.options) {
                     extra = `<select id="opt-${p.id}" class="w-full border p-2 rounded-lg mb-2 text-sm">
                         ${p.options.map(o => `<option value="${o}">${o}</option>`).join('')}
                     </select>`;
                 }
+
+                // Div vacío para los selectores de "Mitad y Mitad" (se llena por JS si aplica)
+                let halfSection = `<div id="half-section-${p.id}" class="hidden space-y-2 mt-2 bg-yellow-50 p-3 rounded-xl border border-yellow-200">
+                    <p class="text-[10px] font-black text-pizza-dark">ELECCIÓN DE MITADES:</p>
+                    <select id="half1-${p.id}" class="w-full border p-2 rounded-lg text-sm">${(p.halfOptions || []).map(o => `<option value="Mitad ${o}">${o}</option>`).join('')}</select>
+                    <select id="half2-${p.id}" class="w-full border p-2 rounded-lg text-sm">${(p.halfOptions || []).map(o => `<option value="Mitad ${o}">${o}</option>`).join('')}</select>
+                </div>`;
 
                 return `
                     <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden flex flex-col pizza-card">
@@ -231,13 +243,30 @@
                             <h3 class="text-xl font-bold text-pizza-dark">${p.name}</h3>
                             <p class="text-gray-500 text-xs mb-4">${p.description || ''}</p>
                             <div class="mt-auto">
-                                <select id="size-${p.id}" class="w-full border p-3 rounded-xl mb-2 bg-gray-50 font-bold outline-none">${sizeOptions}</select>
+                                <select id="size-${p.id}" onchange="checkHalf(${p.id})" class="w-full border p-3 rounded-xl mb-2 bg-gray-50 font-bold outline-none border-2 border-transparent focus:border-pizza-gold transition">${sizeOptions}</select>
                                 ${extra}
-                                <button onclick="addToCart(${p.id})" class="w-full mt-2 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir</button>
+                                ${p.halfOptions ? halfSection : ''}
+                                <button onclick="addToCart(${p.id})" class="w-full mt-2 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir al Carrito</button>
                             </div>
                         </div>
                     </div>`;
             }).join('');
+        }
+
+        // Función "mágica" que muestra/oculta las mitades
+        function checkHalf(id) {
+            const sizeVal = document.getElementById(`size-${id}`).value;
+            const section = document.getElementById(`half-section-${id}`);
+            const item = menuItems.find(p => p.id === id);
+            
+            if (section && item.category === 'combo') {
+                // Si el valor es 'm' (que definimos como Mitad y Mitad)
+                if (sizeVal === 'm') {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            }
         }
 
         function addToCart(id) {
@@ -245,14 +274,26 @@
             const size = document.getElementById(`size-${id}`).value;
             let selections = [];
             
+            // 1. Recoger config básica del combo (refrescos, etc)
             if (item.config) {
                 item.config.forEach((_, idx) => selections.push(document.getElementById(`conf-${id}-${idx}`).value));
-            } else if (document.getElementById(`opt-${id}`)) {
+            } 
+            
+            // 2. Recoger mitades si están activas
+            const halfSection = document.getElementById(`half-section-${id}`);
+            if (halfSection && !halfSection.classList.contains('hidden')) {
+                const h1 = document.getElementById(`half1-${id}`).value;
+                const h2 = document.getElementById(`half2-${id}`).value;
+                selections.unshift(`${h1} + ${h2}`); // Lo ponemos al inicio del texto
+            }
+
+            // 3. Recoger opciones simples (alitas solo, etc)
+            if (document.getElementById(`opt-${id}`)) {
                 selections.push(document.getElementById(`opt-${id}`).value);
             }
 
             const sizeLabel = item.labels ? item.labels[size] : (size==='s'?'35cm':size==='m'?'40cm':'45cm');
-            const finalLabel = selections.length > 0 ? `${sizeLabel} (${selections.join(' / ')})` : sizeLabel;
+            const finalLabel = selections.length > 0 ? `${sizeLabel} [${selections.join(' / ')}]` : sizeLabel;
 
             cart.push({ ...item, sizeLabel: finalLabel, currentPrice: item.price[size], quantity: 1 });
             updateCartUI();
@@ -269,8 +310,8 @@
                 : cart.map((item, idx) => {
                     total += item.currentPrice;
                     count++;
-                    return `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
-                        <div><p class="font-bold">${item.name}</p><p class="text-[10px] text-pizza-red">${item.sizeLabel}</p></div>
+                    return `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl mb-2">
+                        <div><p class="font-bold text-sm">${item.name}</p><p class="text-[10px] text-pizza-red">${item.sizeLabel}</p></div>
                         <div class="text-right"><p class="font-bold">$${item.currentPrice}</p>
                         <button onclick="removeItem(${idx})" class="text-[10px] text-gray-400">Eliminar</button></div>
                     </div>`;
@@ -308,9 +349,9 @@
             }
 
             let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n👤 *Cliente:* ${name.value}\n📞 *Tel:* ${phone.value}\n📦 *Tipo:* ${type}\n`;
-            if(type === 'delivery') msg += `📍 *Dir:* ${document.getElementById('cust-address').value}\n`;
+            if(type === 'delivery') msg += `📍 *Dir:* ${document.getElementById('cust-address').value}\n🚩 *Ref:* ${document.getElementById('cust-cross').value}\n`;
             msg += `━━━━━━━━━━━━━━\n`;
-            cart.forEach(i => msg += `• ${i.name} [${i.sizeLabel}] - $${i.currentPrice}\n`);
+            cart.forEach(i => msg += `• ${i.name} ${i.sizeLabel} - $${i.currentPrice}\n`);
             msg += `━━━━━━━━━━━━━━\n💰 *TOTAL: ${document.getElementById('cart-total').innerText}*`;
 
             window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
@@ -323,6 +364,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', renderPizzas);
+
     </script>
 </body>
 </html>
