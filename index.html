@@ -79,7 +79,7 @@
                 </div>
                 <div class="relative flex justify-center">
                     <div class="absolute inset-0 bg-pizza-gold/20 blur-3xl rounded-full"></div>
-                    <img src="logo2.png" alt="Santy's Pizzería Logo" class="relative z-10 w-full max-w-md drop-shadow-2xl">
+                    <img src="logo1.png" alt="Santy's Pizzería Logo" class="relative z-10 w-full max-w-md drop-shadow-2xl">
                 </div>
             </div>
         </div>
@@ -149,53 +149,61 @@
     <script>
                  // 1. LISTA DE PRODUCTOS ACTUALIZADA
         const menuItems = [
-            { id: 1, category: "pizza", name: "Pepperoni", description: "Salsa de tomate, mozzarella y pepperoni crujiente", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
-            { id: 2, category: "pizza", name: "Jamón", description: "Clásica de jamón de pierna y abundante queso", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
-            { id: 3, category: "pizza", name: "Chorizo", description: "Sabor local con chorizo premium", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" },
-            { id: 4, category: "pizza", name: "3 Quesos", description: "Combinación de Mozzarella, Gouda y Cheddar", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
-            { id: 5, category: "pizza", name: "Hawaiana", description: "El balance perfecto entre jamón y piña dulce", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
-            { id: 6, category: "pizza", name: "Mexicana", description: "Chorizo, cebolla y jalapeños para el toque picante", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
-            { id: 7, category: "pizza", name: "3 Carnes", description: "Pepperoni, jamón y chorizo. ¡Para valientes!", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
-            { id: 8, category: "snack", name: "Papas Gajo", description: "Crujientes, con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
-            { id: 9, category: "alitas", name: "Alitas", description: "Elige tu salsa favorita", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Red Hot Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
-            { id: 10, category: "refresco", name: "Pepsi / Sabores", description: "Pepsi, 7up, Manzanita Sol, Mirinda", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita Sol", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
-            { id: 11, category: "refresco", name: "Coca Cola", description: "La clásica siempre fría", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" }
+            // PIZZAS
+            { id: 1, category: "pizza", name: "Pepperoni", description: "Salsa de tomate, mozzarella y pepperoni", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
+            { id: 2, category: "pizza", name: "Hawaiana", description: "El balance perfecto entre jamón y piña", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
+            { id: 3, category: "pizza", name: "Mexicana", description: "Chorizo, cebolla y jalapeños", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
+            
+            // SNACKS Y BEBIDAS
+            { id: 8, category: "snack", name: "Papas Gajo", description: "220g o 350g con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
+            { id: 9, category: "snack", name: "Alitas", description: "Elige tu salsa favorita", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
+            { id: 10, category: "bebida", name: "Pepsi / Sabores", description: "600ml o 2L", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
+            { id: 11, category: "bebida", name: "Coca Cola", description: "600ml o 2L Fría", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" },
+
+            // COMBOS (PROMOS)
+            { id: 101, category: "combo", name: "Combo Pareja", description: "1 Pizza 35cm (Pep/Jam/Chor) + Papas 220g + 2 Refrescos 600ml", price: {s:299}, labels: {s:"Precio Especial"}, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
+            { id: 102, category: "combo", name: "Paquete Santy's", description: "1 Pizza 45cm (Cualquier sabor) + Alitas 400g + Refresco 2L", price: {s:429}, labels: {s:"Precio Especial"}, options: ["Alitas BBQ", "Alitas Picantes", "Alitas Búfalo", "Alitas Mango"], image: "https://images.unsplash.com/photo-1544982503-9f984c14501a" }
         ];
 
         let cart = [];
+        let currentFilter = 'all';
 
-        // 2. RENDERIZADO CON DOBLE SELECTOR
+        function filterMenu(cat) {
+            currentFilter = cat;
+            renderPizzas();
+            // Actualizar estilo de botones
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.toggle('bg-pizza-dark', btn.innerText.toLowerCase().includes(cat) || (cat === 'all' && btn.innerText === 'Todos'));
+                btn.classList.toggle('text-white', btn.innerText.toLowerCase().includes(cat) || (cat === 'all' && btn.innerText === 'Todos'));
+            });
+        }
+
         function renderPizzas() {
             const grid = document.getElementById('pizza-grid');
-            grid.innerHTML = menuItems.map(p => {
-                let sizeOptions = p.category === "pizza" 
-                    ? `<option value="s">35cm - $${p.price.s}</option><option value="m">40cm - $${p.price.m}</option><option value="l">45cm - $${p.price.l}</option>`
-                    : `<option value="s">${p.labels.s} - $${p.price.s}</option><option value="m">${p.labels.m} - $${p.price.m}</option>`;
+            const items = currentFilter === 'all' ? menuItems : menuItems.filter(i => i.category === currentFilter);
+            
+            grid.innerHTML = items.map(p => {
+                let sizeOptions = p.price.m 
+                    ? `<option value="s">${p.labels?.s || '35cm'} - $${p.price.s}</option><option value="m">${p.labels?.m || '40cm'} - $${p.price.m}</option>${p.price.l ? `<option value="l">45cm - $${p.price.l}</option>` : ''}`
+                    : `<option value="s">${p.labels.s} - $${p.price.s}</option>`;
 
-                let extraSelector = "";
-                if (p.options) {
-                    extraSelector = `<select id="opt-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-white outline-none focus:border-pizza-gold transition">
-                        ${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-                    </select>`;
-                }
+                let extraSelector = p.options ? `<select id="opt-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-white outline-none focus:border-pizza-gold transition">${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}</select>` : "";
 
                 return `
                     <div class="pizza-card bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
                         <img src="${p.image}" class="h-56 w-full object-cover">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-pizza-dark">${p.name}</h3>
-                            <p class="text-gray-500 text-sm mb-4 h-10">${p.description}</p>
-                            <div class="space-y-2">
-                                <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-1 bg-gray-50 outline-none focus:border-pizza-gold transition">
-                                    ${sizeOptions}
-                                </select>
-                                ${extraSelector}
-                            </div>
+                            <p class="text-gray-500 text-sm mb-4 h-12">${p.description}</p>
+                            <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-1 bg-gray-50 outline-none focus:border-pizza-gold transition">${sizeOptions}</select>
+                            ${extraSelector}
                             <button onclick="addToCart(${p.id})" class="w-full mt-4 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition shadow-md">Añadir al Carrito</button>
                         </div>
                     </div>`;
             }).join('');
         }
+
+
 
         function addToCart(id) {
             const item = menuItems.find(p => p.id === id);
