@@ -159,20 +159,50 @@
     <script>
                  // 1. LISTA DE PRODUCTOS ACTUALIZADA
         const menuItems = [
-            // PIZZAS
+            // PIZZAS BÁSICAS (Para Combos)
             { id: 1, category: "pizza", name: "Pepperoni", description: "Salsa de tomate, mozzarella y pepperoni", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
-            { id: 2, category: "pizza", name: "Hawaiana", description: "El balance perfecto entre jamón y piña", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
-            { id: 3, category: "pizza", name: "Mexicana", description: "Chorizo, cebolla y jalapeños", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
+            { id: 2, category: "pizza", name: "Jamón", description: "Clásica de jamón de pierna y queso", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
+            { id: 3, category: "pizza", name: "Chorizo", description: "Sabor local con chorizo premium", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" },
+            { id: 4, category: "pizza", name: "3 Quesos", description: "Mozzarella, Gouda y Cheddar", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
             
-            // SNACKS Y BEBIDAS
-            { id: 8, category: "snack", name: "Papas Gajo", description: "220g o 350g con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
-            { id: 9, category: "snack", name: "Alitas", description: "Elige tu salsa favorita", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
-            { id: 10, category: "bebida", name: "Pepsi / Sabores", description: "600ml o 2L", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
-            { id: 11, category: "bebida", name: "Coca Cola", description: "600ml o 2L Fría", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" },
+            // PIZZAS ESPECIALES
+            { id: 5, category: "pizza", name: "Hawaiana", description: "Piña y jamón", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
+            { id: 6, category: "pizza", name: "Mexicana", description: "Chorizo y jalapeños", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
 
-            // COMBOS (PROMOS)
-            { id: 101, category: "combo", name: "Combo Pareja", description: "1 Pizza 35cm (Pep/Jam/Chor) + Papas 220g + 2 Refrescos 600ml", price: {s:299}, labels: {s:"Precio Especial"}, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
-            { id: 102, category: "combo", name: "Paquete Santy's", description: "1 Pizza 45cm (Cualquier sabor) + Alitas 400g + Refresco 2L", price: {s:429}, labels: {s:"Precio Especial"}, options: ["Alitas BBQ", "Alitas Picantes", "Alitas Búfalo", "Alitas Mango"], image: "https://images.unsplash.com/photo-1544982503-9f984c14501a" }
+            // SNACKS Y BEBIDAS
+            { id: 8, category: "snack", name: "Papas Gajo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
+            { id: 9, category: "alitas", name: "Alitas", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
+            { id: 10, category: "refresco", name: "Pepsi / Sabores", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
+
+            // COMBOS CONFIGURADOS
+            { 
+                id: 101, 
+                category: "combo", 
+                name: "Combo Pareja", 
+                description: "Pizza 35cm (Básica) + Papas 220g + 2 Refrescos 600ml", 
+                price: {s:299}, 
+                labels: {s:"Precio Especial"},
+                config: [
+                    { label: "Elegir Pizza", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos"] },
+                    { label: "Refresco 1", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] },
+                    { label: "Refresco 2", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] }
+                ],
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" 
+            },
+            { 
+                id: 102, 
+                category: "combo", 
+                name: "Paquete Santy's", 
+                description: "Pizza 45cm + Alitas 400g + Refresco 2L", 
+                price: {s:429, m:464}, // s: normal, m: mitad y mitad (+35)
+                labels: {s:"Especialidad", m:"Mitad y Mitad (+$35)"},
+                config: [
+                    { label: "Elegir Pizza", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos", "Hawaiana", "Mexicana", "3 Carnes"] },
+                    { label: "Sabor Alitas", opts: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"] },
+                    { label: "Sabor Refresco 2L", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] }
+                ],
+                image: "https://images.unsplash.com/photo-1544982503-9f984c14501a" 
+            }
         ];
 
         let cart = [];
@@ -181,10 +211,11 @@
         function filterMenu(cat) {
             currentFilter = cat;
             renderPizzas();
-            // Actualizar estilo de botones
             document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.toggle('bg-pizza-dark', btn.innerText.toLowerCase().includes(cat) || (cat === 'all' && btn.innerText === 'Todos'));
-                btn.classList.toggle('text-white', btn.innerText.toLowerCase().includes(cat) || (cat === 'all' && btn.innerText === 'Todos'));
+                const isMatch = btn.getAttribute('onclick').includes(`'${cat}'`);
+                btn.classList.toggle('bg-pizza-dark', isMatch);
+                btn.classList.toggle('text-white', isMatch);
+                btn.classList.toggle('bg-white', !isMatch);
             });
         }
 
@@ -193,64 +224,79 @@
             const items = currentFilter === 'all' ? menuItems : menuItems.filter(i => i.category === currentFilter);
             
             grid.innerHTML = items.map(p => {
-                let sizeOptions = p.price.m 
-                    ? `<option value="s">${p.labels?.s || '35cm'} - $${p.price.s}</option><option value="m">${p.labels?.m || '40cm'} - $${p.price.m}</option>${p.price.l ? `<option value="l">45cm - $${p.price.l}</option>` : ''}`
-                    : `<option value="s">${p.labels.s} - $${p.price.s}</option>`;
+                // Selector de Tamaño/Tipo
+                let sizeOptions = "";
+                if (p.price.m) {
+                    sizeOptions = `<option value="s">${p.labels?.s || 'Chica/Sencilla'} - $${p.price.s}</option>
+                                   <option value="m">${p.labels?.m || 'Mediana/Especial'} - $${p.price.m}</option>`;
+                    if(p.price.l) sizeOptions += `<option value="l">Grande 45cm - $${p.price.l}</option>`;
+                } else {
+                    sizeOptions = `<option value="s">${p.labels?.s || 'Precio'} - $${p.price.s}</option>`;
+                }
 
-                let extraSelector = p.options ? `<select id="opt-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-white outline-none focus:border-pizza-gold transition">${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}</select>` : "";
+                // Selectores de Configuración (Combos o Sabores)
+                let configSelectors = "";
+                if (p.config) {
+                    configSelectors = p.config.map((c, idx) => `
+                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">${c.label}</label>
+                        <select id="conf-${p.id}-${idx}" class="w-full border-2 border-gray-100 p-2 rounded-lg mb-2 bg-white text-sm outline-none">
+                            ${c.opts.map(o => `<option value="${o}">${o}</option>`).join('')}
+                        </select>
+                    `).join('');
+                } else if (p.options) {
+                    configSelectors = `<select id="opt-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-white outline-none">
+                        ${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                    </select>`;
+                }
 
                 return `
-                    <div class="pizza-card bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                        <img src="${p.image}" class="h-56 w-full object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-pizza-dark">${p.name}</h3>
-                            <p class="text-gray-500 text-sm mb-4 h-12">${p.description}</p>
-                            <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-1 bg-gray-50 outline-none focus:border-pizza-gold transition">${sizeOptions}</select>
-                            ${extraSelector}
-                            <button onclick="addToCart(${p.id})" class="w-full mt-4 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition shadow-md">Añadir al Carrito</button>
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                        <img src="${p.image}" class="h-48 w-full object-cover">
+                        <div class="p-5 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-pizza-dark">${p.name}</h3>
+                            <p class="text-gray-500 text-xs mb-4">${p.description}</p>
+                            <div class="mt-auto">
+                                <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-gray-50 font-bold outline-none">
+                                    ${sizeOptions}
+                                </select>
+                                ${configSelectors}
+                                <button onclick="addToCart(${id=p.id})" class="w-full mt-2 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir al Carrito</button>
+                            </div>
                         </div>
                     </div>`;
             }).join('');
         }
 
-
-
         function addToCart(id) {
             const item = menuItems.find(p => p.id === id);
             const size = document.getElementById(`size-${id}`).value;
-            const extraOpt = document.getElementById(`opt-${id}`) ? document.getElementById(`opt-${id}`).value : "";
             
-            let sizeLabel = item.category === "pizza" 
-                ? (size === 's' ? '35cm' : size === 'm' ? '40cm' : '45cm')
-                : item.labels[size];
+            let selections = [];
+            // Recoger datos de combos
+            if (item.config) {
+                item.config.forEach((_, idx) => {
+                    selections.push(document.getElementById(`conf-${id}-${idx}`).value);
+                });
+            } else if (document.getElementById(`opt-${id}`)) {
+                selections.push(document.getElementById(`opt-${id}`).value);
+            }
 
-            const fullLabel = extraOpt ? `${sizeLabel} (${extraOpt})` : sizeLabel;
-            const price = item.price[size];
+            const sizeLabel = item.labels ? item.labels[size] : (size==='s'?'35cm':size==='m'?'40cm':'45cm');
+            const finalLabel = selections.length > 0 ? `${sizeLabel} [${selections.join(' / ')}]` : sizeLabel;
 
-            const existing = cart.find(i => i.id === id && i.size === size && i.extra === extraOpt);
-            if(existing) { existing.quantity++; } 
-            else { cart.push({ ...item, size, sizeLabel: fullLabel, extra: extraOpt, currentPrice: price, quantity: 1 }); }
+            cart.push({ 
+                ...item, 
+                sizeLabel: finalLabel, 
+                currentPrice: item.price[size], 
+                quantity: 1,
+                uniqueKey: id + size + selections.join('') 
+            });
             
             updateCartUI();
-            showToast(`🔥 ${item.name} añadido`);
+            showToast(`✅ ${item.name} añadido`);
         }
 
-        function updateCartUI() {
-            const container = document.getElementById('cart-items');
-            const badge = document.getElementById('cart-badge');
-            let total = 0; let count = 0;
-
-            container.innerHTML = cart.length === 0 
-                ? `<div class="text-center mt-20 text-gray-400">Tu carrito está vacío</div>`
-                : cart.map((item, idx) => {
-                    total += item.currentPrice * item.quantity;
-                    count += item.quantity;
-                    return `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl mb-2">
-                        <div><p class="font-bold">${item.name}</p><p class="text-xs text-pizza-red">${item.sizeLabel}</p></div>
-                        <div class="text-right"><p class="font-bold">$${(item.currentPrice * item.quantity).toFixed(2)}</p>
-                        <button onclick="removeItem(${idx})" class="text-[10px] text-gray-400">Eliminar</button></div>
-                    </div>`;
-                }).join('');
+        
 
             document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
             badge.innerText = count;
