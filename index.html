@@ -31,8 +31,8 @@
         .pizza-card:hover img { transform: scale(1.05); }
         .wood-gradient { background: linear-gradient(135deg, #401A0B 0%, #733219 100%); }
         .input-error { border: 2px solid #ef4444 !important; background-color: #fef2f2; }
+        .input-success { border: 2px solid #22c55e !important; background-color: #f0fdf4; }
         
-        /* Animación de Pulso */
         @keyframes pulse-cart {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -74,12 +74,12 @@
                     <h1 class="font-display text-5xl lg:text-7xl font-black text-pizza-dark leading-tight">
                         La mejor pizza de <br><span class="text-pizza-red">Las Juntas</span>
                     </h1>
-                    <p class="text-xl text-gray-600 max-w-lg">Tradición artesanal en cada rebanada. Elige tu tamaño ideal: 35cm, 40cm o 45cm.</p>
+                    <p class="text-xl text-gray-600 max-w-lg">Tradición artesanal en cada rebanada. Venustiano Carranza 241.</p>
                     <a href="#menu" class="inline-block px-10 py-4 bg-pizza-red text-white font-bold rounded-xl shadow-xl hover:scale-105 transition">Ver Menú Completo</a>
                 </div>
                 <div class="relative flex justify-center">
                     <div class="absolute inset-0 bg-pizza-gold/20 blur-3xl rounded-full"></div>
-                    <img src="logo1.png" alt="Santy's Pizzería Logo" class="relative z-10 w-full max-w-md drop-shadow-2xl">
+                    <img src="logo1.png" alt="Logo" class="relative z-10 w-full max-w-md drop-shadow-2xl">
                 </div>
             </div>
         </div>
@@ -88,27 +88,23 @@
     <section id="menu" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
             <h2 class="text-center font-display text-4xl font-bold mb-4 text-pizza-dark">Nuestro Menú</h2>
-            <p class="text-center text-gray-500 mb-12">Todas nuestras pizzas incluyen salsa de la casa y mozzarella premium</p>
-                    <div class="flex flex-wrap justify-center gap-3 mb-10 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-2">
-            <button onclick="filterMenu('all')" class="cat-btn bg-pizza-dark text-white px-5 py-2 rounded-full font-bold shadow-sm transition-all border-2 border-pizza-dark">Todos</button>
-            <button onclick="filterMenu('pizza')" class="cat-btn bg-white text-pizza-dark px-5 py-2 rounded-full font-bold shadow-sm transition-all border-2 border-gray-100 hover:border-pizza-gold">Pizzas</button>
-            <button onclick="filterMenu('snack')" class="cat-btn bg-white text-pizza-dark px-5 py-2 rounded-full font-bold shadow-sm transition-all border-2 border-gray-100 hover:border-pizza-gold">Snacks</button>
-            <button onclick="filterMenu('bebida')" class="cat-btn bg-white text-pizza-dark px-5 py-2 rounded-full font-bold shadow-sm transition-all border-2 border-gray-100 hover:border-pizza-gold">Bebidas</button>
-            <button onclick="filterMenu('combo')" class="cat-btn bg-pizza-red text-white px-5 py-2 rounded-full font-bold shadow-sm transition-all border-2 border-pizza-red hover:scale-105">⭐ Combos</button>
-        </div>
-
-        <div id="pizza-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="flex flex-wrap justify-center gap-3 mb-10 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 rounded-b-2xl">
+                <button onclick="filterMenu('all')" class="cat-btn bg-pizza-dark text-white px-5 py-2 rounded-full font-bold shadow-sm border-2 border-pizza-dark">Todos</button>
+                <button onclick="filterMenu('pizza')" class="cat-btn bg-white text-pizza-dark px-5 py-2 rounded-full font-bold shadow-sm border-2 border-gray-100 hover:border-pizza-gold">Pizzas</button>
+                <button onclick="filterMenu('snack')" class="cat-btn bg-white text-pizza-dark px-5 py-2 rounded-full font-bold shadow-sm border-2 border-gray-100 hover:border-pizza-gold">Snacks</button>
+                <button onclick="filterMenu('bebida')" class="cat-btn bg-white text-pizza-dark px-5 py-2 rounded-full font-bold shadow-sm border-2 border-gray-100 hover:border-pizza-gold">Bebidas</button>
+                <button onclick="filterMenu('combo')" class="cat-btn bg-pizza-red text-white px-5 py-2 rounded-full font-bold shadow-sm border-2 border-pizza-red">⭐ Combos</button>
             </div>
 
+            <div id="pizza-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
     </section>
 
     <footer class="wood-gradient text-white py-12">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <img src="logo1.png" class="w-24 mx-auto mb-4 opacity-80">
             <p class="font-display text-2xl font-bold mb-2">Santy's Pizzería</p>
-            <p class="text-pizza-gold/80 mb-6 font-medium tracking-wide">Venustiano Carranza 241, Las Juntas, Pto Vallarta</p>
-            <p class="text-white/40 text-sm italic">"Hecha a mano • Calidad superior"</p>
+            <p class="text-pizza-gold/80">Venustiano Carranza 241, Las Juntas, Pto Vallarta</p>
         </div>
     </footer>
 
@@ -116,15 +112,15 @@
     <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 cart-sidebar cart-closed flex flex-col">
         <div class="p-6 border-b flex justify-between items-center wood-gradient text-white">
             <h2 class="text-2xl font-bold">Tu Pedido</h2>
-            <button onclick="toggleCart()" class="text-white text-3xl leading-none">&times;</button>
+            <button onclick="toggleCart()" class="text-white text-3xl">&times;</button>
         </div>
-        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4 text-pizza-dark"></div>
         <div class="p-6 border-t bg-gray-50 space-y-4">
             <div class="flex justify-between text-xl font-bold text-pizza-dark">
                 <span>Total:</span>
                 <span id="cart-total">$0.00</span>
             </div>
-            <button onclick="openCheckout()" id="checkout-btn" disabled class="w-full bg-pizza-red text-white py-4 rounded-xl font-bold text-lg hover:bg-pizza-dark transition shadow-lg disabled:opacity-50">
+            <button onclick="openCheckout()" id="checkout-btn" disabled class="w-full bg-pizza-red text-white py-4 rounded-xl font-bold text-lg hover:bg-pizza-dark transition disabled:opacity-50">
                 Finalizar Compra
             </button>
         </div>
@@ -132,74 +128,61 @@
 
     <div id="checkout-modal" class="fixed inset-0 bg-black/50 z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-3xl w-full max-w-md relative shadow-2xl">
-            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-2xl text-gray-400 hover:text-pizza-dark transition">&times;</button>
-            <h2 class="text-2xl font-bold mb-6 text-pizza-dark">Confirmar Entrega</h2>
+            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-2xl text-gray-400">&times;</button>
+            <h2 class="text-2xl font-bold mb-6 text-pizza-dark">Datos de Entrega</h2>
             <div class="space-y-4">
                 <input id="cust-name" type="text" placeholder="¿A nombre de quién?" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
-                <input id="cust-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="Teléfono (10 dígitos)" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
-
-                <select id="order-type" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold" onchange="toggleAddress(this.value)">
-                    <option value="recoger">🏠 Recoger en sucursal (Las Juntas)</option>
+                <input id="cust-phone" type="tel" maxlength="10" placeholder="Teléfono (10 dígitos)" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
+                <select id="order-type" class="w-full border p-3 rounded-xl outline-none" onchange="toggleAddress(this.value)">
+                    <option value="recoger">🏠 Recoger en sucursal</option>
                     <option value="delivery">🛵 Envío a domicilio</option>
                 </select>
                 <div id="address-fields" class="hidden space-y-4">
-                    <input id="cust-address" type="text" placeholder="Calle y número de casa" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
-                    <input id="cust-cross" type="text" placeholder="Referencias (Casa color azul, etc.)" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
+                    <input id="cust-address" type="text" placeholder="Calle y número" class="w-full border p-3 rounded-xl outline-none">
+                    <input id="cust-cross" type="text" placeholder="Referencias de la casa" class="w-full border p-3 rounded-xl outline-none">
                 </div>
-                <textarea id="cust-notes" placeholder="¿Alguna instrucción especial? (Ej: Sin cebolla)" class="w-full border p-3 rounded-xl h-24 outline-none focus:border-pizza-gold"></textarea>
-                <button onclick="sendWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition flex items-center justify-center gap-2">
-                    Enviar Pedido por WhatsApp ✅
+                <button onclick="sendWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition">
+                    Enviar por WhatsApp ✅
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-pizza-dark text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-20 opacity-0 transition-all z-[70] font-bold"></div>
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-pizza-dark text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-20 opacity-0 transition-all z-[70] font-bold text-center"></div>
 
     <script>
-                 // 1. LISTA DE PRODUCTOS ACTUALIZADA
         const menuItems = [
-            // PIZZAS BÁSICAS (Para Combos)
-            { id: 1, category: "pizza", name: "Pepperoni", description: "Salsa de tomate, mozzarella y pepperoni", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
-            { id: 2, category: "pizza", name: "Jamón", description: "Clásica de jamón de pierna y queso", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
-            { id: 3, category: "pizza", name: "Chorizo", description: "Sabor local con chorizo premium", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" },
+            { id: 1, category: "pizza", name: "Pepperoni", description: "Clásica con pepperoni crujiente", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
+            { id: 2, category: "pizza", name: "Jamón", description: "Jamón de pierna y mozzarella", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
+            { id: 3, category: "pizza", name: "Chorizo", description: "Chorizo premium local", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3" },
             { id: 4, category: "pizza", name: "3 Quesos", description: "Mozzarella, Gouda y Cheddar", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" },
-            
-            // PIZZAS ESPECIALES
             { id: 5, category: "pizza", name: "Hawaiana", description: "Piña y jamón", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
             { id: 6, category: "pizza", name: "Mexicana", description: "Chorizo y jalapeños", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
+            
+            { id: 8, category: "snack", name: "Papas Gajo", description: "Con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
+            { id: 9, category: "snack", name: "Alitas", description: "Elige tu salsa", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
+            { id: 10, category: "bebida", name: "Pepsi / Sabores", description: "Fríos", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
+            { id: 11, category: "bebida", name: "Coca Cola", description: "Original", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" },
 
-            // SNACKS Y BEBIDAS
-            { id: 8, category: "snack", name: "Papas Gajo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
-            { id: 9, category: "alitas", name: "Alitas", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
-            { id: 10, category: "refresco", name: "Pepsi / Sabores", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
-
-            // COMBOS CONFIGURADOS
             { 
-                id: 101, 
-                category: "combo", 
-                name: "Combo Pareja", 
-                description: "Pizza 35cm (Básica) + Papas 220g + 2 Refrescos 600ml", 
-                price: {s:299}, 
-                labels: {s:"Precio Especial"},
+                id: 101, category: "combo", name: "Combo Pareja", 
+                description: "Pizza 35cm (Básica) + Papas + 2 Refrescos 600ml", 
+                price: {s:299}, labels: {s:"Precio Especial"},
                 config: [
-                    { label: "Elegir Pizza", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos"] },
+                    { label: "Pizza (Básica)", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos"] },
                     { label: "Refresco 1", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] },
                     { label: "Refresco 2", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] }
                 ],
                 image: "https://images.unsplash.com/photo-1513104890138-7c749659a591" 
             },
             { 
-                id: 102, 
-                category: "combo", 
-                name: "Paquete Santy's", 
+                id: 102, category: "combo", name: "Paquete Santy's", 
                 description: "Pizza 45cm + Alitas 400g + Refresco 2L", 
-                price: {s:429, m:464}, // s: normal, m: mitad y mitad (+35)
-                labels: {s:"Especialidad", m:"Mitad y Mitad (+$35)"},
+                price: {s:429, m:464}, labels: {s:"Pizza Especialidad", m:"Mitad y Mitad (+$35)"},
                 config: [
-                    { label: "Elegir Pizza", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos", "Hawaiana", "Mexicana", "3 Carnes"] },
-                    { label: "Sabor Alitas", opts: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"] },
-                    { label: "Sabor Refresco 2L", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] }
+                    { label: "Sabor Pizza", opts: ["Pepperoni", "Jamón", "Chorizo", "3 Quesos", "Hawaiana", "Mexicana"] },
+                    { label: "Salsa Alitas", opts: ["BBQ", "BBQ Picante", "Búfalo", "Mango Habanero"] },
+                    { label: "Sabor Refresco", opts: ["Pepsi", "7up", "Manzanita", "Mirinda"] }
                 ],
                 image: "https://images.unsplash.com/photo-1544982503-9f984c14501a" 
             }
@@ -224,43 +207,33 @@
             const items = currentFilter === 'all' ? menuItems : menuItems.filter(i => i.category === currentFilter);
             
             grid.innerHTML = items.map(p => {
-                // Selector de Tamaño/Tipo
-                let sizeOptions = "";
-                if (p.price.m) {
-                    sizeOptions = `<option value="s">${p.labels?.s || 'Chica/Sencilla'} - $${p.price.s}</option>
-                                   <option value="m">${p.labels?.m || 'Mediana/Especial'} - $${p.price.m}</option>`;
-                    if(p.price.l) sizeOptions += `<option value="l">Grande 45cm - $${p.price.l}</option>`;
-                } else {
-                    sizeOptions = `<option value="s">${p.labels?.s || 'Precio'} - $${p.price.s}</option>`;
-                }
+                let sizeOptions = `<option value="s">${p.labels?.s || '35cm'} - $${p.price.s}</option>`;
+                if(p.price.m) sizeOptions += `<option value="m">${p.labels?.m || '40cm'} - $${p.price.m}</option>`;
+                if(p.price.l) sizeOptions += `<option value="l">45cm - $${p.price.l}</option>`;
 
-                // Selectores de Configuración (Combos o Sabores)
-                let configSelectors = "";
+                let extra = "";
                 if (p.config) {
-                    configSelectors = p.config.map((c, idx) => `
-                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">${c.label}</label>
-                        <select id="conf-${p.id}-${idx}" class="w-full border-2 border-gray-100 p-2 rounded-lg mb-2 bg-white text-sm outline-none">
+                    extra = p.config.map((c, idx) => `
+                        <label class="text-[10px] font-bold text-gray-400 uppercase">${c.label}</label>
+                        <select id="conf-${p.id}-${idx}" class="w-full border p-2 rounded-lg mb-2 text-sm">
                             ${c.opts.map(o => `<option value="${o}">${o}</option>`).join('')}
-                        </select>
-                    `).join('');
+                        </select>`).join('');
                 } else if (p.options) {
-                    configSelectors = `<select id="opt-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-white outline-none">
-                        ${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                    extra = `<select id="opt-${p.id}" class="w-full border p-2 rounded-lg mb-2 text-sm">
+                        ${p.options.map(o => `<option value="${o}">${o}</option>`).join('')}
                     </select>`;
                 }
 
                 return `
-                    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-                        <img src="${p.image}" class="h-48 w-full object-cover">
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden flex flex-col pizza-card">
+                        <img src="${p.image}" class="h-48 w-full object-cover transition-transform">
                         <div class="p-5 flex-1 flex flex-col">
                             <h3 class="text-xl font-bold text-pizza-dark">${p.name}</h3>
-                            <p class="text-gray-500 text-xs mb-4">${p.description}</p>
+                            <p class="text-gray-500 text-xs mb-4">${p.description || ''}</p>
                             <div class="mt-auto">
-                                <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-gray-50 font-bold outline-none">
-                                    ${sizeOptions}
-                                </select>
-                                ${configSelectors}
-                                <button onclick="addToCart(${id=p.id})" class="w-full mt-2 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir al Carrito</button>
+                                <select id="size-${p.id}" class="w-full border p-3 rounded-xl mb-2 bg-gray-50 font-bold outline-none">${sizeOptions}</select>
+                                ${extra}
+                                <button onclick="addToCart(${p.id})" class="w-full mt-2 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition">Añadir</button>
                             </div>
                         </div>
                     </div>`;
@@ -270,90 +243,74 @@
         function addToCart(id) {
             const item = menuItems.find(p => p.id === id);
             const size = document.getElementById(`size-${id}`).value;
-            
             let selections = [];
-            // Recoger datos de combos
+            
             if (item.config) {
-                item.config.forEach((_, idx) => {
-                    selections.push(document.getElementById(`conf-${id}-${idx}`).value);
-                });
+                item.config.forEach((_, idx) => selections.push(document.getElementById(`conf-${id}-${idx}`).value));
             } else if (document.getElementById(`opt-${id}`)) {
                 selections.push(document.getElementById(`opt-${id}`).value);
             }
 
             const sizeLabel = item.labels ? item.labels[size] : (size==='s'?'35cm':size==='m'?'40cm':'45cm');
-            const finalLabel = selections.length > 0 ? `${sizeLabel} [${selections.join(' / ')}]` : sizeLabel;
+            const finalLabel = selections.length > 0 ? `${sizeLabel} (${selections.join(' / ')})` : sizeLabel;
 
-            cart.push({ 
-                ...item, 
-                sizeLabel: finalLabel, 
-                currentPrice: item.price[size], 
-                quantity: 1,
-                uniqueKey: id + size + selections.join('') 
-            });
-            
+            cart.push({ ...item, sizeLabel: finalLabel, currentPrice: item.price[size], quantity: 1 });
             updateCartUI();
             showToast(`✅ ${item.name} añadido`);
         }
 
-        
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const badge = document.getElementById('cart-badge');
+            let total = 0; let count = 0;
+
+            container.innerHTML = cart.length === 0 
+                ? `<div class="text-center mt-20 text-gray-400">Carrito vacío</div>`
+                : cart.map((item, idx) => {
+                    total += item.currentPrice;
+                    count++;
+                    return `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
+                        <div><p class="font-bold">${item.name}</p><p class="text-[10px] text-pizza-red">${item.sizeLabel}</p></div>
+                        <div class="text-right"><p class="font-bold">$${item.currentPrice}</p>
+                        <button onclick="removeItem(${idx})" class="text-[10px] text-gray-400">Eliminar</button></div>
+                    </div>`;
+                }).join('');
 
             document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
             badge.innerText = count;
             badge.style.opacity = count > 0 ? '1' : '0';
             document.getElementById('checkout-btn').disabled = count === 0;
-
-            const cartBtn = document.querySelector('button[onclick="toggleCart()"]');
-            cartBtn.classList.remove('pulse-animation');
-            void cartBtn.offsetWidth; cartBtn.classList.add('pulse-animation');
+            document.getElementById('main-cart-btn').classList.add('pulse-animation');
+            setTimeout(() => document.getElementById('main-cart-btn').classList.remove('pulse-animation'), 400);
         }
 
         function removeItem(idx) { cart.splice(idx, 1); updateCartUI(); }
         function toggleCart() {
             const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
             sidebar.classList.toggle('cart-closed');
             sidebar.classList.toggle('cart-open');
-            document.getElementById('cart-overlay').classList.toggle('hidden');
+            overlay.classList.toggle('hidden');
+            setTimeout(() => overlay.classList.toggle('opacity-0'), 10);
         }
-        function toggleAddress(val) { document.getElementById('address-fields').classList.toggle('hidden', val !== 'delivery'); }
         function openCheckout() { document.getElementById('checkout-modal').classList.remove('hidden'); }
         function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
-
-        document.getElementById('cust-phone').addEventListener('input', function() {
-            this.value = this.value.replace(/\D/g, '');
-            this.classList.toggle('input-success', this.value.length === 10);
-            if(this.value.length === 10) this.classList.remove('input-error');
-        });
-
-        document.getElementById('cust-name').addEventListener('input', function() {
-            this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
-            this.classList.toggle('input-success', this.value.trim().length >= 3);
-            if(this.value.trim().length >= 3) this.classList.remove('input-error');
-        });
+        function toggleAddress(val) { document.getElementById('address-fields').classList.toggle('hidden', val !== 'delivery'); }
 
         function sendWhatsApp() {
-            const fields = {
-                name: document.getElementById('cust-name'),
-                phone: document.getElementById('cust-phone'),
-                address: document.getElementById('cust-address'),
-                cross: document.getElementById('cust-cross')
-            };
+            const name = document.getElementById('cust-name');
+            const phone = document.getElementById('cust-phone');
             const type = document.getElementById('order-type').value;
-            let hasError = false;
-
-            if (fields.name.value.trim().length < 3) { fields.name.classList.add('input-error'); hasError = true; }
-            if (fields.phone.value.length !== 10) { fields.phone.classList.add('input-error'); hasError = true; }
-            if (type === 'delivery') {
-                if (!fields.address.value.trim()) { fields.address.classList.add('input-error'); hasError = true; }
-                if (!fields.cross.value.trim()) { fields.cross.classList.add('input-error'); hasError = true; }
+            
+            if (name.value.length < 3 || phone.value.length !== 10) {
+                showToast("⚠️ Revisa nombre y teléfono");
+                return;
             }
 
-            if (hasError) { showToast("⚠️ Revisa los campos en rojo"); return; }
-
-            let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n👤 *Cliente:* ${fields.name.value}\n📞 *Tel:* ${fields.phone.value}\n📦 *Tipo:* ${type}\n`;
-            if (type === 'delivery') msg += `📍 *Dir:* ${fields.address.value}\n🚩 *Ref:* ${fields.cross.value}\n`;
+            let msg = `🍕 *PEDIDO SANTY'S PIZZERÍA*\n👤 *Cliente:* ${name.value}\n📞 *Tel:* ${phone.value}\n📦 *Tipo:* ${type}\n`;
+            if(type === 'delivery') msg += `📍 *Dir:* ${document.getElementById('cust-address').value}\n`;
             msg += `━━━━━━━━━━━━━━\n`;
-            cart.forEach(i => msg += `• ${i.quantity}x ${i.name} [${i.sizeLabel}] - $${(i.currentPrice * i.quantity).toFixed(2)}\n`);
+            cart.forEach(i => msg += `• ${i.name} [${i.sizeLabel}] - $${i.currentPrice}\n`);
             msg += `━━━━━━━━━━━━━━\n💰 *TOTAL: ${document.getElementById('cart-total').innerText}*`;
 
             window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
@@ -366,8 +323,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', renderPizzas);
-
-
     </script>
 </body>
 </html>
