@@ -332,62 +332,64 @@
 
     <script>
         // Data
-        const pizzas = [
-            {
-                id: 1,
-                name: "Pepperoni Clásica",
-                description: "Doble pepperoni, queso mozzarella extra y orégano fresco",
-                price: 189,
-                category: "clasica",
-                image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop&q=80",
-                tags: ["Más vendida", "Picante"]
-            },
-            {
-                id: 2,
-                name: "Cuatro Quesos",
-                description: "Mozzarella, gorgonzola, parmesano y queso de cabra",
-                price: 215,
-                category: "especial",
-                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=80",
-                tags: ["Vegetariana"]
-            },
-            {
-                id: 3,
-                name: "Hawaiana Especial",
-                description: "Jamón premium, piña caramelizada y cereza",
-                price: 199,
-                category: "clasica",
-                image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop&q=80",
-                tags: ["Dulce"]
-            },
-            {
-                id: 4,
-                name: "Vegetariana Supreme",
-                description: "Pimientos, champiñones, cebolla, aceitunas y tomate",
-                price: 175,
-                category: "vegetariana",
-                image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600&auto=format&fit=crop&q=80",
-                tags: ["Saludable"]
-            },
-            {
-                id: 5,
-                name: "Carnívora Deluxe",
-                description: "Pepperoni, jamón, salchicha, tocino y carne molida",
-                price: 249,
-                category: "especial",
-                image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=600&auto=format&fit=crop&q=80",
-                tags: ["Para compartir"]
-            },
-            {
-                id: 6,
-                name: "Margarita Tradicional",
-                description: "Salsa de tomate san marzano, mozzarella fresca y albahaca",
-                price: 159,
-                category: "clasica",
-                image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&auto=format&fit=crop&q=80",
-                tags: ["Clásica"]
-            }
-        ];
+const pizzas = [
+{
+id: 1,
+name: "Pepperoni",
+description: "Salsa de tomate, mozzarella y pepperoni",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1628840042765-356cda07504e"
+},
+{
+id: 2,
+name: "Jamón",
+description: "Salsa de tomate, mozzarella y jamón",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212"
+},
+{
+id: 3,
+name: "Chorizo",
+description: "Salsa de tomate, mozzarella y chorizo",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3"
+},
+{
+id: 4,
+name: "3 Quesos",
+description: "Mozzarella, gouda y cheddar",
+price: {s:169, m:199, l:219},
+category: "clasica",
+image: "https://images.unsplash.com/photo-1513104890138-7c749659a591"
+},
+{
+id: 5,
+name: "Hawaiana",
+description: "Jamón y piña",
+price: {s:189, m:209, l:249},
+category: "especial",
+image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38"
+},
+{
+id: 6,
+name: "Mexicana",
+description: "Chorizo, cebolla y jalapeño",
+price: {s:189, m:209, l:249},
+category: "especial",
+image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002"
+},
+{
+id: 7,
+name: "3 Carnes",
+description: "Pepperoni, jamón y chorizo",
+price: {s:189, m:209, l:249},
+category: "especial",
+image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212"
+}
+];
 
         let cart = [];
 
