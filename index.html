@@ -147,7 +147,7 @@
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-pizza-dark text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-20 opacity-0 transition-all z-[70] font-bold"></div>
 
     <script>
-         // 1. LISTA DE PRODUCTOS (PIZZAS, SNACKS Y BEBIDAS)
+                 // 1. LISTA DE PRODUCTOS ACTUALIZADA
         const menuItems = [
             { id: 1, category: "pizza", name: "Pepperoni", description: "Salsa de tomate, mozzarella y pepperoni crujiente", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
             { id: 2, category: "pizza", name: "Jamón", description: "Clásica de jamón de pierna y abundante queso", price: {s:169, m:199, l:219}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
@@ -156,50 +156,65 @@
             { id: 5, category: "pizza", name: "Hawaiana", description: "El balance perfecto entre jamón y piña dulce", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" },
             { id: 6, category: "pizza", name: "Mexicana", description: "Chorizo, cebolla y jalapeños para el toque picante", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002" },
             { id: 7, category: "pizza", name: "3 Carnes", description: "Pepperoni, jamón y chorizo. ¡Para valientes!", price: {s:189, m:209, l:249}, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212" },
-            { id: 8, category: "snack", name: "Papas Gajo", description: "Crujientes, acompañadas con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
-            { id: 9, category: "snack", name: "Alitas", description: "Salsas: BBQ, BBQ picante, Red Hot búfalo o Mango habanero", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
-            { id: 10, category: "bebida", name: "Refrescos", description: "Variedad de sabores bien fríos", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" }
+            { id: 8, category: "snack", name: "Papas Gajo", description: "Crujientes, con queso amarillo", price: {s:79, m:99}, labels: {s:"220g", m:"350g"}, image: "https://images.unsplash.com/photo-1623238914712-0886a6219aa5" },
+            { id: 9, category: "alitas", name: "Alitas", description: "Elige tu salsa favorita", price: {s:99, m:149}, labels: {s:"250g", m:"400g"}, options: ["BBQ", "BBQ Picante", "Red Hot Búfalo", "Mango Habanero"], image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2" },
+            { id: 10, category: "refresco", name: "Pepsi / Sabores", description: "Pepsi, 7up, Manzanita Sol, Mirinda", price: {s:25, m:45}, labels: {s:"600ml", m:"2L"}, options: ["Pepsi", "7up", "Manzanita Sol", "Mirinda"], image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97" },
+            { id: 11, category: "refresco", name: "Coca Cola", description: "La clásica siempre fría", price: {s:35, m:65}, labels: {s:"600ml", m:"2L"}, image: "https://images.unsplash.com/photo-1629203851020-7dd29b0ad405" }
         ];
 
         let cart = [];
 
-        // 2. MOSTRAR PRODUCTOS EN LA PÁGINA
+        // 2. RENDERIZADO CON DOBLE SELECTOR
         function renderPizzas() {
             const grid = document.getElementById('pizza-grid');
             grid.innerHTML = menuItems.map(p => {
-                let options = p.category === "pizza" 
+                let sizeOptions = p.category === "pizza" 
                     ? `<option value="s">35cm - $${p.price.s}</option><option value="m">40cm - $${p.price.m}</option><option value="l">45cm - $${p.price.l}</option>`
                     : `<option value="s">${p.labels.s} - $${p.price.s}</option><option value="m">${p.labels.m} - $${p.price.m}</option>`;
 
+                let extraSelector = "";
+                if (p.options) {
+                    extraSelector = `<select id="opt-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-2 bg-white outline-none focus:border-pizza-gold transition">
+                        ${p.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                    </select>`;
+                }
+
                 return `
                     <div class="pizza-card bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                        <img src="${p.image}" class="h-56 w-full object-cover transition-transform duration-500">
+                        <img src="${p.image}" class="h-56 w-full object-cover">
                         <div class="p-6">
                             <h3 class="text-xl font-bold mb-2 text-pizza-dark">${p.name}</h3>
                             <p class="text-gray-500 text-sm mb-4 h-10">${p.description}</p>
-                            <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-4 bg-gray-50 outline-none focus:border-pizza-gold transition">
-                                ${options}
-                            </select>
-                            <button onclick="addToCart(${p.id})" class="w-full bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition shadow-md">Añadir al Carrito</button>
+                            <div class="space-y-2">
+                                <select id="size-${p.id}" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-1 bg-gray-50 outline-none focus:border-pizza-gold transition">
+                                    ${sizeOptions}
+                                </select>
+                                ${extraSelector}
+                            </div>
+                            <button onclick="addToCart(${p.id})" class="w-full mt-4 bg-pizza-dark text-white py-3 rounded-xl font-bold hover:bg-pizza-red transition shadow-md">Añadir al Carrito</button>
                         </div>
                     </div>`;
             }).join('');
         }
 
-        // 3. LOGICA DEL CARRITO
         function addToCart(id) {
             const item = menuItems.find(p => p.id === id);
             const size = document.getElementById(`size-${id}`).value;
+            const extraOpt = document.getElementById(`opt-${id}`) ? document.getElementById(`opt-${id}`).value : "";
+            
             let sizeLabel = item.category === "pizza" 
                 ? (size === 's' ? '35cm' : size === 'm' ? '40cm' : '45cm')
                 : item.labels[size];
 
-            const existing = cart.find(i => i.id === id && i.size === size);
+            const fullLabel = extraOpt ? `${sizeLabel} (${extraOpt})` : sizeLabel;
+            const price = item.price[size];
+
+            const existing = cart.find(i => i.id === id && i.size === size && i.extra === extraOpt);
             if(existing) { existing.quantity++; } 
-            else { cart.push({ ...item, size, sizeLabel, currentPrice: item.price[size], quantity: 1 }); }
+            else { cart.push({ ...item, size, sizeLabel: fullLabel, extra: extraOpt, currentPrice: price, quantity: 1 }); }
             
             updateCartUI();
-            showToast(`🔥 ${item.name} (${sizeLabel}) añadido`);
+            showToast(`🔥 ${item.name} añadido`);
         }
 
         function updateCartUI() {
@@ -232,16 +247,14 @@
         function removeItem(idx) { cart.splice(idx, 1); updateCartUI(); }
         function toggleCart() {
             const sidebar = document.getElementById('cart-sidebar');
-            const isOpen = sidebar.classList.contains('cart-open');
-            sidebar.classList.toggle('cart-closed', isOpen);
-            sidebar.classList.toggle('cart-open', !isOpen);
-            document.getElementById('cart-overlay').classList.toggle('hidden', isOpen);
+            sidebar.classList.toggle('cart-closed');
+            sidebar.classList.toggle('cart-open');
+            document.getElementById('cart-overlay').classList.toggle('hidden');
         }
         function toggleAddress(val) { document.getElementById('address-fields').classList.toggle('hidden', val !== 'delivery'); }
         function openCheckout() { document.getElementById('checkout-modal').classList.remove('hidden'); }
         function closeCheckout() { document.getElementById('checkout-modal').classList.add('hidden'); }
 
-        // 4. VALIDACIONES EN TIEMPO REAL
         document.getElementById('cust-phone').addEventListener('input', function() {
             this.value = this.value.replace(/\D/g, '');
             this.classList.toggle('input-success', this.value.length === 10);
@@ -254,7 +267,6 @@
             if(this.value.trim().length >= 3) this.classList.remove('input-error');
         });
 
-        // 5. ENVIAR A WHATSAPP
         function sendWhatsApp() {
             const fields = {
                 name: document.getElementById('cust-name'),
