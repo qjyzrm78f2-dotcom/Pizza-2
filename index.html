@@ -118,7 +118,14 @@
             <h2 class="text-2xl font-bold mb-6 text-pizza-dark">Confirmar Entrega</h2>
             <div class="space-y-4">
                 <input id="cust-name" type="text" placeholder="¿A nombre de quién?" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
-                <input id="cust-phone" type="tel" placeholder="WhatsApp (Ej: 322...)" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
+                <input id="cust-phone" 
+       type="tel" 
+       pattern="[0-9]*" 
+       inputmode="numeric" 
+       maxlength="10" 
+       placeholder="Teléfono (10 dígitos)" 
+       class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold">
+
                 <select id="order-type" class="w-full border p-3 rounded-xl outline-none focus:border-pizza-gold" onchange="toggleAddress(this.value)">
                     <option value="recoger">🏠 Recoger en sucursal (Las Juntas)</option>
                     <option value="delivery">🛵 Envío a domicilio</option>
@@ -258,6 +265,26 @@
         phone: document.getElementById('cust-phone'),
         address: document.getElementById('cust-address'),
         cross: document.getElementById('cust-cross')
+        // ... dentro de sendWhatsApp() ...
+
+let hasError = false;
+
+// Validar Nombre
+if (!fields.name.value.trim()) { 
+    fields.name.classList.add('input-error'); 
+    hasError = true; 
+}
+
+// VALIDACIÓN DE TELÉFONO (10 DÍGITOS EXACTOS)
+const phoneValue = fields.phone.value.trim().replace(/\D/g, ''); // Elimina cualquier cosa que no sea número
+if (phoneValue.length !== 10) { 
+    fields.phone.classList.add('input-error'); 
+    showToast("⚠️ El teléfono debe tener 10 números exactos.");
+    hasError = true; 
+}
+
+// ... continuar con la validación de dirección si es delivery ...
+
     };
     const type = document.getElementById('order-type').value;
     const notes = document.getElementById('cust-notes').value.trim();
