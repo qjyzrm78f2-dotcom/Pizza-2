@@ -44,7 +44,11 @@
         </div>
     </nav>
 
-    <main class="pt-40 pb-24 max-w-6xl mx-auto px-4">
+    <div id="timer-banner" class="fixed top-20 w-full bg-pizza-red text-white p-3 text-center font-black uppercase text-xs tracking-widest hidden z-40 shadow-lg">
+        ⚡ ¡EL HORARIO FELIZ TERMINA EN: <span id="countdown" class="text-pizza-gold text-lg ml-2">00:00:00</span>! ⚡
+    </div>
+
+    <main class="pt-40 pb-24 max-w-6xl mx-auto px-4" id="main-content">
         
         <div id="sec-pizzas" class="menu-section">
             <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter text-pizza-dark">Elige tu Pizza</h2>
@@ -55,6 +59,16 @@
         <div id="sec-promos" class="menu-section hidden">
             <h2 class="text-2xl font-black mb-2 uppercase text-pizza-red border-b-4 border-pizza-gold inline-block">Ofertas Exclusivas Web</h2>
             <p class="text-[10px] text-gray-500 mb-6 font-extrabold uppercase italic">⚠️ Válido solo en tu primer pedido directo ⚠️</p>
+            
+            <div class="bg-yellow-100 border-l-4 border-pizza-gold p-4 mb-6 rounded-r-xl">
+                <div class="flex items-center">
+                    <div class="py-1"><span class="text-2xl mr-3">⏰</span></div>
+                    <div>
+                        <p class="text-sm font-black text-pizza-dark uppercase">Horario Feliz: 10:00 AM - 4:00 PM</p>
+                        <p class="text-[10px] text-gray-600 font-bold uppercase">¡Precios especiales para el lunch de oficina y casa!</p>
+                    </div>
+                </div>
+            </div>
             
             <div class="mb-8 bg-gradient-to-r from-pizza-red to-red-700 p-1 rounded-3xl shadow-xl">
                 <div class="bg-white rounded-[22px] p-6 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -123,12 +137,40 @@
         const pEspeciales = ["Hawaiana", "Mexicana", "3 Carnes", "Santy's Special", "Vegetariana"];
         const sRefresco = ["Pepsi", "Mirinda", "7up", "Manzanita", "Agua"];
 
+        // Configuración de Horario Feliz (10 AM - 4 PM)
+        const ahora = new Date();
+        const horaActual = ahora.getHours();
+        const esHorarioFeliz = horaActual >= 10 && horaActual < 16;
+
         const combos = [
-            { id: 101, name: "Dúo 35 Básica", price: 199, desc: "1 Pizza 35cm + Papas Gajo 220g", hasUpgrade: true, selects: [{l:"Pizza", opts: pBasicas}] },
-            { id: 104, name: "Dúo 40 Básica", price: 239, desc: "1 Pizza 40cm + Papas Gajo 220g", hasUpgrade: true, selects: [{l:"Pizza", opts: pBasicas}] },
-            { id: 102, name: "Dúo 35 Doble", price: 289, desc: "2 Pizzas 35cm Básicas", selects: [{l:"Pizza 1", opts: pBasicas}, {l:"Pizza 2", opts: pBasicas}] },
-            { id: 105, name: "Dúo 40 Doble", price: 369, desc: "2 Pizzas 40cm Básicas", selects: [{l:"Pizza 1", opts: pBasicas}, {l:"Pizza 2", opts: pBasicas}] }
+            { 
+                id: 101, 
+                name: "Dúo Express (35cm + Papas)", 
+                price: esHorarioFeliz ? 189 : 219, // Descuento en la mañana
+                desc: "1 Pizza 35cm + Papas Gajo + Dip Secreto", 
+                hasUpgrade: true, 
+                selects: [{l:"Pizza", opts: pBasicas}] 
+            },
+            { 
+                id: 102, 
+                name: "Pareja Santy's (2 Pizzas 35cm)", 
+                price: esHorarioFeliz ? 299 : 339, 
+                desc: "2 Pizzas 35cm + Refresco 2L GRATIS", 
+                selects: [{l:"Pizza 1", opts: pBasicas}, {l:"Pizza 2", opts: pBasicas}] 
+            },
+            { 
+                id: 105, 
+                name: "Mega Santy's (40cm Familia)", 
+                price: esHorarioFeliz ? 419 : 459, 
+                desc: "2 Pizzas 40cm + Alitas + Refresco 2L", 
+                selects: [{l:"Pizza 1", opts: pBasicas}, {l:"Pizza 2", opts: pBasicas}] 
+            }
         ];
+
+        // Mensaje dinámico para el usuario
+        if (esHorarioFeliz) {
+            alert("¡Estás en HORARIO FELIZ! 🍕 Precios especiales activados hasta las 4:00 PM.");
+        }
 
         const individuales = [
             { id: 1, name: "Pepperoni", cat: "pizzas", price: {s:169, m:199, l:219}, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e" },
@@ -305,7 +347,34 @@
             window.open(`https://wa.me/526693123366?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
+        function actualizarContador() {
+            const ahora = new Date();
+            const banner = document.getElementById('timer-banner');
+            const display = document.getElementById('countdown');
+
+            // Definimos el fin del horario feliz (4:00 PM = 16:00 horas)
+            const finHorario = new Date();
+            finHorario.setHours(16, 0, 0);
+
+            if (ahora >= new Date().setHours(10, 0, 0) && ahora < finHorario) {
+                banner.classList.remove('hidden');
+                
+                const dif = finHorario - ahora;
+                const horas = Math.floor((dif / (1000 * 60 * 60)) % 24);
+                const minutos = Math.floor((dif / (1000 * 60)) % 60);
+                const segundos = Math.floor((dif / 1000) % 60);
+
+                display.innerText = 
+                    `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // Ejecutar cada segundo
+        setInterval(actualizarContador, 1000);
         document.addEventListener('DOMContentLoaded', renderAll);
+        document.addEventListener('DOMContentLoaded', actualizarContador);
     </script>
 </body>
 </html>
